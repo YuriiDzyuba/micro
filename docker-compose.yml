@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  jwt-service:
+    build: ./jwt-service
+    command: npm run start:dev
+    restart: unless-stopped
+    volumes:
+      - ./jwt-service/src:/app/src
+    env_file:
+      - ./jwt-service/.env
+    networks:
+      - jwt-docker-network
+    depends_on:
+      - jwt-db
+
+  jwt-db:
+    image: mongo:5.0
+    container_name: jwt-mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ./jwt-db/mongo:/data/db
+    networks:
+      - jwt-docker-network
+
+networks:
+  jwt-docker-network:
+    driver: bridge
