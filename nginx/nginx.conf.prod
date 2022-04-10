@@ -1,0 +1,9 @@
+server {
+  listen 80;
+
+  server_name localhost.test.com;
+
+  location /jwt-api {
+    proxy_pass http://jwt-service:3000/jwt-api;
+  }
+}

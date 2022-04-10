@@ -24,6 +24,18 @@ services:
     networks:
       - jwt-docker-network
 
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
+    networks:
+      - jwt-docker-network
+    depends_on:
+      - jwt-service
+      - jwt-db
+
 networks:
   jwt-docker-network:
     driver: bridge
