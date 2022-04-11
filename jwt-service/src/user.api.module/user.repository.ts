@@ -2,12 +2,25 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/createUser.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schema/user.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { FindUserByIdDto } from './dto/findUserById.dto';
+import { v4 as uuidv4 } from 'uuid';
+import {SafeUserType} from "../contracts/shared/safeUser.type";
 
 @Injectable()
 export class UserRepository {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
+
+  private serializeOne(result: User) {
+    return (({ userId, userName, email, verified_email, picture, roles, createdAt, updatedAt}) => ({
+      userId,
+      userName,
+      email,
+      verified_email,
+      picture,
+      roles, createdAt, updatedAt
+    }))(result);
+  }
 
   async findUserByEmailAndUserName(
     email: string,
@@ -16,17 +29,14 @@ export class UserRepository {
     return await this.userModel.findOne({ email, userName }).lean().exec();
   }
 
-  async saveUser(userToSave: CreateUserDto): Promise<User> {
-    const newUser = new this.userModel(userToSave);
+  async saveUser(userToSave: CreateUserDto): Promise<SafeUserType> {
+    const newUser = new this.userModel({ ...userToSave, userId: uuidv4() });
     const result = await newUser.save();
-    const savedUser =  result.toObject()
-    delete savedUser.__v
-    delete savedUser._id
-    return savedUser
+    return this.serializeOne(result.toObject());
   }
 
   async findUsers(): Promise<User[]> {
-    return await this.userModel.find().exec();
+    return await this.userModel.find().lean().exec();
   }
 
   async findUserById(id: FindUserByIdDto): Promise<User> {

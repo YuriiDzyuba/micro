@@ -1,8 +1,8 @@
 import { UserResponseInterface } from './userResponse.interface';
-import { UserType } from '../../shared/user.type';
+import {SafeUserType} from "../../shared/safeUser.type";
 
 export interface UserApiPresenterInterface {
-  buildUserResponse(user: UserType): UserResponseInterface;
+  buildUserResponse(user: SafeUserType): UserResponseInterface;
 }
 
 export const UserApiPresenterInterfaceToken = Symbol(

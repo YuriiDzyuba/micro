@@ -8,6 +8,7 @@ import { UserType } from '../contracts/shared/user.type';
 import { ChangeUserPictureDto } from './dto/changeUserPicture.dto';
 import { ChangeUserNameDto } from './dto/changeUserName.dto';
 import { UserApiServiceInterface } from '../contracts/user/interfaces/userApiService.interface';
+import {SafeUserType} from "../contracts/shared/safeUser.type";
 
 @Injectable()
 export class UserApiService implements UserApiServiceInterface {
@@ -16,7 +17,7 @@ export class UserApiService implements UserApiServiceInterface {
     private readonly password: PasswordService,
   ) {}
 
-  async createUser(candidate: CreateUserDto): Promise<UserType> {
+  async createUser(candidate: CreateUserDto): Promise<SafeUserType> {
     const existingUser = await this.userRepository.findUserByEmailAndUserName(
       candidate.email,
       candidate.userName,
@@ -45,7 +46,7 @@ export class UserApiService implements UserApiServiceInterface {
   async changeUserPicture(
     userId: FindUserByIdDto,
     userPicture: ChangeUserPictureDto,
-  ): Promise<UserType> {
+  ): Promise<SafeUserType> {
     const foundedUser = await this.findUserById(userId);
 
     if (!foundedUser) throw new UserNotExistException();
@@ -58,7 +59,7 @@ export class UserApiService implements UserApiServiceInterface {
   async changeUserName(
     userId: FindUserByIdDto,
     userName: ChangeUserNameDto,
-  ): Promise<UserType> {
+  ): Promise<SafeUserType> {
     const foundedUser = await this.findUserById(userId);
 
     if (!foundedUser) throw new UserNotExistException();

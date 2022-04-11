@@ -19,7 +19,6 @@ export class User implements UserType {
   userName: string;
 
   @Prop({ required: true })
-  @Exclude({ toPlainOnly: true, toClassOnly: true })
   password: string;
 
   @Prop({ required: true })
