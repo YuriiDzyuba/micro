@@ -3,14 +3,14 @@ import { UserApiService } from './userApi.service';
 import { UserApiController } from './userApi.controller';
 import { PasswordService } from './password.service';
 import { UserRepository } from './user.repository';
-import { UserSchema } from './schema/user.schema';
-import { MongooseModule } from '@nestjs/mongoose';
+import { User } from './entity/user.entity';
 import { UserApiPresenter } from './userApi.presenter';
 import { UserApiServiceInterfaceToken } from '../contracts/user/interfaces/userApiService.interface';
 import { UserApiPresenterInterfaceToken } from '../contracts/user/interfaces/userApiPresenter.interface';
+import { TypeOrmModule } from "@nestjs/typeorm";
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])],
+  imports: [TypeOrmModule.forFeature([User])],
   controllers: [UserApiController],
   providers: [
     {

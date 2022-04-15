@@ -3,7 +3,7 @@ import {SafeUserType} from "../../shared/safeUser.type";
 
 export interface UserApiServiceInterface {
   createUser(
-    candidate: Pick<UserType, 'email' & 'password'>,
+    candidate: Pick<UserType, 'email' | 'password'>,
   ): Promise<SafeUserType>;
   findUsers(): Promise<UserType[]>;
   findUserById(userId: Pick<UserType, 'userId'>): Promise<UserType>;
