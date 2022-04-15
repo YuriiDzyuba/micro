@@ -1,38 +1,48 @@
-import {Entity, Column, ObjectIdColumn, PrimaryGeneratedColumn} from 'typeorm';
+import {Entity, Column, ObjectIdColumn, PrimaryColumn, ObjectID} from 'typeorm';
 import { UserRoleEnum } from '../../contracts/shared/enums/userRole.enum';
 import { Exclude } from "class-transformer";
+import { v4 as uuidv4 } from 'uuid';
+import { UserType } from "../../contracts/shared/user.type";
 
 @Entity()
-export class User {
+export class User implements UserType{
   @Exclude()
   @ObjectIdColumn()
-  _id: string;
+  private _id: ObjectID;
 
-  @PrimaryGeneratedColumn('uuid')
-  userId: string;
+  @PrimaryColumn({unique: true})
+  public userId: string;
 
+  @Column({ unique: true })
+  public userName: string;
+
+  @Exclude()
   @Column({ nullable: false })
-  userName: string;
+  public password: string;
 
-  @Column({ nullable: false,  select: false })
-  password: string;
-
-  @Column({ nullable: false })
-  email: string;
-
-  @Column({ default: UserRoleEnum.user })
-  roles: string[];
-
-  @Column({ default: false })
-  verified_email: boolean;
+  @Column({ nullable: false, unique: true })
+  public email: string;
 
   @Column()
-  picture: string;
+  public roles: string[];
 
-  @Column({ nullable: false, default: Date.now })
-  createdAt: Date;
+  @Column()
+  public verifiedEmail: boolean;
 
-  @Column({ nullable: false })
-  updatedAt: Date;
+  @Column()
+  public picture: string;
+
+  @Column()
+  public createdAt: number;
+
+  @Column()
+  public updatedAt: number;
+
+  constructor() {
+    this.userId = uuidv4()
+    this.createdAt = Date.now()
+    this.verifiedEmail = false
+    this.roles = [UserRoleEnum.user]
+  }
 }
 

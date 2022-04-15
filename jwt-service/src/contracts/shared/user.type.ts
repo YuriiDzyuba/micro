@@ -1,10 +1,8 @@
-import { Types } from 'mongoose';
-
 export type UserType = {
-  userId: string | Types.ObjectId;
+  userId: string;
   userName: string;
   email: string;
-  verified_email: boolean;
+  verifiedEmail: boolean;
   picture: string;
   password: string;
 };
