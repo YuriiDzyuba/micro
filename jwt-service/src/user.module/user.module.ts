@@ -8,9 +8,10 @@ import { UserPresenter } from './user.presenter';
 import { UserApiServiceInterfaceToken } from '../contracts/user.module/interfaces/userService.interface';
 import { UserApiPresenterInterfaceToken } from '../contracts/user.module/interfaces/userPresenter.interface';
 import { TypeOrmModule } from "@nestjs/typeorm";
+import {EventsModule} from "../events/events.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User]), EventsModule],
   controllers: [UserController],
   providers: [
     {

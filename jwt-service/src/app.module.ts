@@ -4,15 +4,18 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { UserModule } from './user.module/user.module';
-import { mongoDbUrl } from './config/config';
+import { mongoDbUrl} from './config/config';
 import { AdminModule } from './admin.module/admin.module';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from "./user.module/entity/user.entity";
+import { EventEmitterModule } from "@nestjs/event-emitter";
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
     UserModule,
+    EventEmitterModule.forRoot(),
     TypeOrmModule.forRoot({
       entities: [User],
       type: 'mongodb',
@@ -22,6 +25,7 @@ import { User } from "./user.module/entity/user.entity";
       logging: true,
     }),
     AdminModule,
+    EventsModule,
   ],
   providers: [
     {

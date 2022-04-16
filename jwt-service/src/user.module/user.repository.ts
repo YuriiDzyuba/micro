@@ -33,8 +33,6 @@ export class UserRepository {
   async saveUser(userToSave: CreateUserDto): Promise<SafeUserType> {
     const newUser = new User();
     const result = await this.userModel.save({...newUser, ...userToSave});
-
-    console.log(result, "result")
     return this.serializeOne(result);
   }
 
