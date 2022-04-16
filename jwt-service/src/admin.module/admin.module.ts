@@ -1,22 +1,22 @@
 import { Module } from '@nestjs/common';
-import { AdminApiService } from './adminApi.service';
-import { AdminApiController } from './adminApi.controller';
-import { UserModule } from '../user.api.module/user.module';
-import { AdminApiServiceInterfaceToken } from '../contracts/admin/interfaces/adminApiService.interface';
-import { AdminApiPresenterInterfaceToken } from '../contracts/admin/interfaces/adminApiPresenter.interface';
-import { AdminApiPresenter } from './adminApi.presenter';
+import { AdminService } from './admin.service';
+import { AdminController } from './admin.controller';
+import { UserModule } from '../user.module/user.module';
+import { AdminApiServiceInterfaceToken } from '../contracts/admin.module/interfaces/adminService.interface';
+import { AdminApiPresenterInterfaceToken } from '../contracts/admin.module/interfaces/adminPresenter.interface';
+import { AdminPresenter } from './admin.presenter';
 
 @Module({
   imports: [UserModule],
-  controllers: [AdminApiController],
+  controllers: [AdminController],
   providers: [
     {
       provide: AdminApiServiceInterfaceToken,
-      useClass: AdminApiService,
+      useClass: AdminService,
     },
     {
       provide: AdminApiPresenterInterfaceToken,
-      useClass: AdminApiPresenter,
+      useClass: AdminPresenter,
     },
   ],
 })

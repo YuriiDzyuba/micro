@@ -9,7 +9,7 @@ import { AdminServiceInterface } from '../contracts/admin.module/interfaces/admi
 import { UserType } from '../contracts/shared/user.type';
 
 @Injectable()
-export class AdminApiService implements AdminServiceInterface {
+export class AdminService implements AdminServiceInterface {
   constructor(
     @Inject(UserApiServiceInterfaceToken)
     private userApiService: UserServiceInterface,

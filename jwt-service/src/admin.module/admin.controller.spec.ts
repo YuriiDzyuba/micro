@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AdminApiController } from './adminApi.controller';
-import { AdminApiService } from './adminApi.service';
+import { AdminController } from './admin.controller';
+import { AdminService } from './admin.service';
 
 describe('AdminController', () => {
-  let controller: AdminApiController;
+  let controller: AdminController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [AdminApiController],
-      providers: [AdminApiService],
+      controllers: [AdminController],
+      providers: [AdminService],
     }).compile();
 
-    controller = module.get<AdminApiController>(AdminApiController);
+    controller = module.get<AdminController>(AdminController);
   });
 
   it('should be defined', () => {

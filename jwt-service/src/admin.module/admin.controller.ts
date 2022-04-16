@@ -22,7 +22,7 @@ import { ManyUsersResponseInterface } from '../contracts/admin.module/interfaces
 import { RemovedUserResponseInterface } from '../contracts/admin.module/interfaces/removedUserResponse.interface';
 
 @Controller('admin')
-export class AdminApiController implements AdminControllerInterface {
+export class AdminController implements AdminControllerInterface {
   constructor(
     @Inject(AdminApiServiceInterfaceToken)
     private apiService: AdminServiceInterface,

@@ -3,7 +3,7 @@ import { OneUserResponseInterface } from './oneUserResponse.interface';
 import { ManyUsersResponseInterface } from './manyUsersResponse.interface';
 import { RemovedUserResponseInterface } from './removedUserResponse.interface';
 
-export interface AdminApiControllerInterface {
+export interface AdminControllerInterface {
   findUsers(): Promise<ManyUsersResponseInterface>;
   findUserById(id: Pick<UserType, 'userId'>): Promise<OneUserResponseInterface>;
   removeUser(

@@ -7,25 +7,8 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {MongoRepository} from "typeorm";
 
 
-interface UserRepositoryI {
-  readonly userModel: MongoRepository<User>;
-
-  findUserByEmailAndUserName(
-      email: string,
-      userName: string,
-  ): Promise<User>;
-
-  saveUser(userToSave: CreateUserDto): Promise<SafeUserType>;
-
-  findUsers(): Promise<User[]>;
-
-  findUserById(id: FindUserByIdDto): Promise<User>;
-
-  removeUser(id: FindUserByIdDto): Promise<void>;
-}
-
 @Injectable()
-export class UserRepository implements UserRepositoryI {
+export class UserRepository {
   constructor(@InjectRepository(User)
               readonly userModel: MongoRepository<User>) {}
 

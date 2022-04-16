@@ -5,7 +5,7 @@ import { UserPresenterInterface } from '../contracts/user.module/interfaces/user
 import { SafeUserType } from "../contracts/shared/safeUser.type";
 
 @Injectable()
-export class UserApiPresenter implements UserPresenterInterface {
+export class UserPresenter implements UserPresenterInterface {
   private generateToken(
     user: SafeUserType,
 

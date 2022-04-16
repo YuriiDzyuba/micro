@@ -3,12 +3,12 @@ import {
   Module,
   ValidationPipe,
 } from '@nestjs/common';
-import { UserModule } from './user.api.module/user.module';
+import { UserModule } from './user.module/user.module';
 import { mongoDbUrl } from './config/config';
-import { AdminModule } from './admin.api.module/admin.module';
+import { AdminModule } from './admin.module/admin.module';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from "./user.api.module/entity/user.entity";
+import { User } from "./user.module/entity/user.entity";
 
 @Module({
   imports: [

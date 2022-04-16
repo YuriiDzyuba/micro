@@ -1,33 +1,33 @@
 import { Module } from '@nestjs/common';
-import { UserApiService } from './userApi.service';
-import { UserApiController } from './userApi.controller';
+import { UserService } from './user.service';
+import { UserController } from './user.controller';
 import { PasswordService } from './password.service';
 import { UserRepository } from './user.repository';
 import { User } from './entity/user.entity';
-import { UserApiPresenter } from './userApi.presenter';
-import { UserApiServiceInterfaceToken } from '../contracts/user/interfaces/userApiService.interface';
-import { UserApiPresenterInterfaceToken } from '../contracts/user/interfaces/userApiPresenter.interface';
+import { UserPresenter } from './user.presenter';
+import { UserApiServiceInterfaceToken } from '../contracts/user.module/interfaces/userService.interface';
+import { UserApiPresenterInterfaceToken } from '../contracts/user.module/interfaces/userPresenter.interface';
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
-  controllers: [UserApiController],
+  controllers: [UserController],
   providers: [
     {
       provide: UserApiServiceInterfaceToken,
-      useClass: UserApiService,
+      useClass: UserService,
     },
     {
       provide: UserApiPresenterInterfaceToken,
-      useClass: UserApiPresenter,
+      useClass: UserPresenter,
     },
     PasswordService,
-    UserRepository,
+    UserRepository
   ],
   exports: [
     {
       provide: UserApiServiceInterfaceToken,
-      useClass: UserApiService,
+      useClass: UserService,
     },
   ],
 })

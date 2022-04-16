@@ -24,7 +24,7 @@ import {
 } from '../contracts/user.module/interfaces/userPresenter.interface';
 
 @Controller('user')
-export class UserApiController implements UserControllerInterface {
+export class UserController implements UserControllerInterface {
   constructor(
     @Inject(UserApiServiceInterfaceToken)
     private userApiService: UserServiceInterface,

@@ -11,7 +11,7 @@ import { UserServiceInterface } from '../contracts/user.module/interfaces/userSe
 import { SafeUserType } from "../contracts/shared/safeUser.type";
 
 @Injectable()
-export class UserApiService implements UserServiceInterface {
+export class UserService implements UserServiceInterface {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly password: PasswordService,

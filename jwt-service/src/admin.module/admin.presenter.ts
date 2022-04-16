@@ -4,7 +4,7 @@ import { UserType } from '../contracts/shared/user.type';
 import { OneUserResponseInterface } from '../contracts/admin.module/interfaces/oneUserResponse.interface';
 import { RemovedUserResponseInterface } from '../contracts/admin.module/interfaces/removedUserResponse.interface';
 
-export class AdminApiPresenter implements AdminPresenterInterface {
+export class AdminPresenter implements AdminPresenterInterface {
   buildManyUserResponse(users: UserType[]): ManyUsersResponseInterface {
     return { users };
   }

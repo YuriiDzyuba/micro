@@ -1,5 +1,5 @@
-import { UserType } from '../../shared/user.type';
+import {SafeUserType} from "../../shared/safeUser.type";
 
 export interface OneUserResponseInterface {
-  user: Omit<UserType, 'password'>;
+  user: SafeUserType;
 }

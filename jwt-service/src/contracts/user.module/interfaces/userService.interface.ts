@@ -1,7 +1,7 @@
 import { UserType } from '../../shared/user.type';
 import { SafeUserType } from "../../shared/safeUser.type";
 
-export interface UserApiServiceInterface {
+export interface UserServiceInterface {
   createUser(
     candidate: Pick<UserType, 'email' | 'password'>,
   ): Promise<SafeUserType>;
@@ -18,4 +18,4 @@ export interface UserApiServiceInterface {
   removeUser(userId: Pick<UserType, 'userId'>): Promise<void>;
 }
 
-export const UserApiServiceInterfaceToken = Symbol('UserApiServiceInterface');
+export const UserApiServiceInterfaceToken = Symbol('UserServiceInterface');
