@@ -7,27 +7,27 @@ import {
   ValidationPipe,
   Inject,
 } from '@nestjs/common';
-import { FindUserByIdDto } from '../user.api.module/dto/findUserById.dto';
-import { AdminApiControllerInterface } from '../contracts/admin/interfaces/adminApiController.interface';
+import { FindUserByIdDto } from '../user.module/dto/findUserById.dto';
+import { AdminControllerInterface } from '../contracts/admin.module/interfaces/adminController.interface';
 import {
-  AdminApiServiceInterface,
+  AdminServiceInterface,
   AdminApiServiceInterfaceToken,
-} from '../contracts/admin/interfaces/adminApiService.interface';
+} from '../contracts/admin.module/interfaces/adminService.interface';
 import {
-  AdminApiPresenterInterface,
+  AdminPresenterInterface,
   AdminApiPresenterInterfaceToken,
-} from '../contracts/admin/interfaces/adminApiPresenter.interface';
-import { OneUserResponseInterface } from '../contracts/admin/interfaces/oneUserResponse.interface';
-import { ManyUsersResponseInterface } from '../contracts/admin/interfaces/manyUsersResponse.interface';
-import { RemovedUserResponseInterface } from '../contracts/admin/interfaces/removedUserResponse.interface';
+} from '../contracts/admin.module/interfaces/adminPresenter.interface';
+import { OneUserResponseInterface } from '../contracts/admin.module/interfaces/oneUserResponse.interface';
+import { ManyUsersResponseInterface } from '../contracts/admin.module/interfaces/manyUsersResponse.interface';
+import { RemovedUserResponseInterface } from '../contracts/admin.module/interfaces/removedUserResponse.interface';
 
 @Controller('admin')
-export class AdminApiController implements AdminApiControllerInterface {
+export class AdminApiController implements AdminControllerInterface {
   constructor(
     @Inject(AdminApiServiceInterfaceToken)
-    private apiService: AdminApiServiceInterface,
+    private apiService: AdminServiceInterface,
     @Inject(AdminApiPresenterInterfaceToken)
-    private adminPresenter: AdminApiPresenterInterface,
+    private adminPresenter: AdminPresenterInterface,
   ) {}
 
   @Get()

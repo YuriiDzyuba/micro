@@ -1,11 +1,11 @@
 import { sign } from 'jsonwebtoken';
-import { UserResponseInterface } from '../contracts/user/interfaces/userResponse.interface';
+import { UserResponseInterface } from '../contracts/user.module/interfaces/userResponse.interface';
 import { Injectable } from '@nestjs/common';
-import { UserApiPresenterInterface } from '../contracts/user/interfaces/userApiPresenter.interface';
+import { UserPresenterInterface } from '../contracts/user.module/interfaces/userPresenter.interface';
 import { SafeUserType } from "../contracts/shared/safeUser.type";
 
 @Injectable()
-export class UserApiPresenter implements UserApiPresenterInterface {
+export class UserApiPresenter implements UserPresenterInterface {
   private generateToken(
     user: SafeUserType,
 

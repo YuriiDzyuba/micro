@@ -7,11 +7,11 @@ import { FindUserByIdDto } from './dto/findUserById.dto';
 import { UserType } from '../contracts/shared/user.type';
 import { ChangeUserPictureDto } from './dto/changeUserPicture.dto';
 import { ChangeUserNameDto } from './dto/changeUserName.dto';
-import { UserApiServiceInterface } from '../contracts/user/interfaces/userApiService.interface';
-import {SafeUserType} from "../contracts/shared/safeUser.type";
+import { UserServiceInterface } from '../contracts/user.module/interfaces/userService.interface';
+import { SafeUserType } from "../contracts/shared/safeUser.type";
 
 @Injectable()
-export class UserApiService implements UserApiServiceInterface {
+export class UserApiService implements UserServiceInterface {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly password: PasswordService,

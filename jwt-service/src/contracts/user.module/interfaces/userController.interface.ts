@@ -1,5 +1,5 @@
 import { UserResponseInterface } from './userResponse.interface';
-import { CreateUserDto } from '../../../user.api.module/dto/createUser.dto';
+import { CreateUserDto } from '../../../user.module/dto/createUser.dto';
 import { UserType } from '../../shared/user.type';
 
 export interface UserApiControllerInterface {
