@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
-  UserApiServiceInterface,
+  UserServiceInterface,
   UserApiServiceInterfaceToken,
-} from '../contracts/user/interfaces/userApiService.interface';
-import { FindUserByIdDto } from '../user.api.module/dto/findUserById.dto';
-import { UserNotExistException } from '../user.api.module/exceptions/userNotExist.exception';
-import { AdminApiServiceInterface } from '../contracts/admin/interfaces/adminApiService.interface';
+} from '../contracts/user.module/interfaces/userService.interface';
+import { FindUserByIdDto } from '../user.module/dto/findUserById.dto';
+import { UserNotExistException } from '../user.module/exceptions/userNotExist.exception';
+import { AdminServiceInterface } from '../contracts/admin.module/interfaces/adminService.interface';
 import { UserType } from '../contracts/shared/user.type';
 
 @Injectable()
-export class AdminApiService implements AdminApiServiceInterface {
+export class AdminService implements AdminServiceInterface {
   constructor(
     @Inject(UserApiServiceInterfaceToken)
-    private userApiService: UserApiServiceInterface,
+    private userApiService: UserServiceInterface,
   ) {}
 
   async findUserById(id: FindUserByIdDto): Promise<UserType> {

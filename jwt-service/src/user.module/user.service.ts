@@ -7,14 +7,17 @@ import { FindUserByIdDto } from './dto/findUserById.dto';
 import { UserType } from '../contracts/shared/user.type';
 import { ChangeUserPictureDto } from './dto/changeUserPicture.dto';
 import { ChangeUserNameDto } from './dto/changeUserName.dto';
-import { UserApiServiceInterface } from '../contracts/user/interfaces/userApiService.interface';
-import {SafeUserType} from "../contracts/shared/safeUser.type";
+import { UserServiceInterface } from '../contracts/user.module/interfaces/userService.interface';
+import { SafeUserType } from "../contracts/shared/safeUser.type";
+import { EventsService } from "../events/events.service";
+import {EventsEnum} from "../contracts/events/events.enum";
 
 @Injectable()
-export class UserApiService implements UserApiServiceInterface {
+export class UserService implements UserServiceInterface {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly password: PasswordService,
+    private readonly eventService: EventsService
   ) {}
 
   async createUser(candidate: CreateUserDto): Promise<SafeUserType> {
@@ -27,12 +30,14 @@ export class UserApiService implements UserApiServiceInterface {
 
     const hashedPassword = await this.password.toHash(candidate.password);
 
-    const savedUser = await this.userRepository.saveUser({
+    const savedUser: SafeUserType = await this.userRepository.saveUser({
       ...candidate,
       password: hashedPassword,
     });
+
+    await this.eventService.onUserCreateEventEmitter(savedUser);
+
     return savedUser;
-    //event
   }
 
   async findUsers(): Promise<UserType[]> {

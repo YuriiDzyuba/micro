@@ -3,14 +3,12 @@ import { OneUserResponseInterface } from './oneUserResponse.interface';
 import { ManyUsersResponseInterface } from './manyUsersResponse.interface';
 import { RemovedUserResponseInterface } from './removedUserResponse.interface';
 
-export interface AdminApiPresenterInterface {
+export interface AdminPresenterInterface {
   buildOneUserResponse(user: UserType): OneUserResponseInterface;
   buildManyUserResponse(user: UserType[]): ManyUsersResponseInterface;
-  buildRemovedUserResponse(
-    id: Pick<UserType, 'userId'>,
-  ): RemovedUserResponseInterface;
+  buildRemovedUserResponse(id: Pick<UserType, 'userId'>): RemovedUserResponseInterface;
 }
 
 export const AdminApiPresenterInterfaceToken = Symbol(
-  'AdminApiPresenterInterface',
+  'AdminPresenterInterface',
 );

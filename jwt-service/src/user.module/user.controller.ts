@@ -10,26 +10,26 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/createUser.dto';
 import { ChangeUserPictureDto } from './dto/changeUserPicture.dto';
-import { UserApiControllerInterface } from '../contracts/user/interfaces/userApiController.interface';
-import { UserResponseInterface } from '../contracts/user/interfaces/userResponse.interface';
+import { UserControllerInterface } from '../contracts/user.module/interfaces/userController.interface';
+import { UserResponseInterface } from '../contracts/user.module/interfaces/userResponse.interface';
 import { FindUserByIdDto } from './dto/findUserById.dto';
 import { ChangeUserNameDto } from './dto/changeUserName.dto';
 import {
-  UserApiServiceInterface,
+  UserServiceInterface,
   UserApiServiceInterfaceToken,
-} from '../contracts/user/interfaces/userApiService.interface';
+} from '../contracts/user.module/interfaces/userService.interface';
 import {
-  UserApiPresenterInterface,
+  UserPresenterInterface,
   UserApiPresenterInterfaceToken,
-} from '../contracts/user/interfaces/userApiPresenter.interface';
+} from '../contracts/user.module/interfaces/userPresenter.interface';
 
 @Controller('user')
-export class UserApiController implements UserApiControllerInterface {
+export class UserController implements UserControllerInterface {
   constructor(
     @Inject(UserApiServiceInterfaceToken)
-    private userApiService: UserApiServiceInterface,
+    private userApiService: UserServiceInterface,
     @Inject(UserApiPresenterInterfaceToken)
-    private userPresenter: UserApiPresenterInterface,
+    private userPresenter: UserPresenterInterface,
   ) {}
 
   @Post()
