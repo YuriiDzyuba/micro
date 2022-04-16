@@ -13,6 +13,7 @@ services:
       - jwt-docker-network
     depends_on:
       - jwt-db
+      - redis
 
   jwt-db:
     image: mongo:5.0
@@ -23,6 +24,16 @@ services:
       - ./jwt-db/mongo:/data/db
     networks:
       - jwt-docker-network
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - jwt-docker-network
+    restart:
+      unless-stopped
 
   nginx:
     image: nginx:stable-alpine
@@ -35,6 +46,7 @@ services:
     depends_on:
       - jwt-service
       - jwt-db
+      - redis
 
 networks:
   jwt-docker-network:
