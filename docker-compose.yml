@@ -15,6 +15,20 @@ services:
       - jwt-db
       - redis
 
+  email-service:
+    build: ./email-service
+    command: npm run start:dev
+    restart: unless-stopped
+    volumes:
+      - ./email-service/src:/app/src
+    env_file:
+      - ./email-service/.env
+    networks:
+      - jwt-docker-network
+    depends_on:
+      - jwt-service
+      - redis
+
   jwt-db:
     image: mongo:5.0
     container_name: jwt-mongo

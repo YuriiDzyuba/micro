@@ -3,6 +3,7 @@
 */node_modules
 /jwt-db
 *.env
+/.env
 
 # Logs
 logs
