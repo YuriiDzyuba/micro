@@ -10,7 +10,6 @@ import { ChangeUserNameDto } from './dto/changeUserName.dto';
 import { UserServiceInterface } from '../contracts/user.module/interfaces/userService.interface';
 import { SafeUserType } from "../contracts/shared/safeUser.type";
 import { EventsService } from "../events/events.service";
-import {EventsEnum} from "../contracts/events/events.enum";
 
 @Injectable()
 export class UserService implements UserServiceInterface {
