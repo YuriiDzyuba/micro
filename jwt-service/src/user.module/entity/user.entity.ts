@@ -30,6 +30,9 @@ export class User implements UserType{
   public verifiedEmail: boolean;
 
   @Column()
+  public verifyEmailLink: string;
+
+  @Column()
   public picture: string;
 
   @Column()
