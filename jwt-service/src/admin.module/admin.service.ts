@@ -7,6 +7,7 @@ import { FindUserByIdDto } from '../user.module/dto/findUserById.dto';
 import { UserNotExistException } from '../user.module/exceptions/userNotExist.exception';
 import { AdminServiceInterface } from '../contracts/admin.module/interfaces/adminService.interface';
 import { UserType } from '../contracts/shared/user.type';
+import {SafeUserType} from "../contracts/shared/safeUser.type";
 
 @Injectable()
 export class AdminService implements AdminServiceInterface {
@@ -19,7 +20,7 @@ export class AdminService implements AdminServiceInterface {
     return await this.userApiService.findUserById(id);
   }
 
-  async findUsers(): Promise<UserType[]> {
+  async findUsers(): Promise<SafeUserType[]> {
     return await this.userApiService.findUsers();
   }
 

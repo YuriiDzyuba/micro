@@ -22,6 +22,7 @@ import {
   UserPresenterInterface,
   UserApiPresenterInterfaceToken,
 } from '../contracts/user.module/interfaces/userPresenter.interface';
+import {LoginUserDto} from "./dto/loginUser.dto";
 
 @Controller('user')
 export class UserController implements UserControllerInterface {
@@ -38,6 +39,14 @@ export class UserController implements UserControllerInterface {
   ): Promise<UserResponseInterface> {
     const createdUser = await this.userApiService.createUser(createUserDto);
     return this.userPresenter.buildUserResponse(createdUser);
+  }
+
+  @Post('login')
+  async logInUser(
+    @Body() logUserDto: LoginUserDto,
+  ): Promise<UserResponseInterface> {
+    const logInnedUser = await this.userApiService.loginUser(logUserDto);
+    return this.userPresenter.buildUserResponse(logInnedUser);
   }
 
   @Patch(':id/picture')

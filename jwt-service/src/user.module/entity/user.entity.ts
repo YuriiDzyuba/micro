@@ -45,6 +45,7 @@ export class User implements UserType{
     this.userId = uuidv4()
     this.createdAt = Date.now()
     this.verifiedEmail = false
+    this.verifyEmailLink = uuidv4()
     this.roles = [UserRoleEnum.user]
   }
 }

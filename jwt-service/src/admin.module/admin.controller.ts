@@ -34,7 +34,7 @@ export class AdminController implements AdminControllerInterface {
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async findUsers(): Promise<ManyUsersResponseInterface> {
     const foundedUsers = await this.apiService.findUsers();
-    return this.adminPresenter.buildManyUserResponse(foundedUsers);
+    return this.adminPresenter.buildManyUsersResponse(foundedUsers);
   }
 
   @Get(':id')

@@ -3,10 +3,13 @@ import { SafeUserType } from "../../shared/safeUser.type";
 
 export interface UserServiceInterface {
   createUser(
+    candidate: Pick<UserType, 'password' | 'userName' | 'email'>,
+  ): Promise<SafeUserType>;
+  loginUser(
     candidate: Pick<UserType, 'email' | 'password'>,
   ): Promise<SafeUserType>;
-  findUsers(): Promise<UserType[]>;
-  findUserById(userId: Pick<UserType, 'userId'>): Promise<UserType>;
+  findUsers(): Promise<SafeUserType[]>;
+  findUserById(userId: Pick<UserType, 'userId'>): Promise<SafeUserType>;
   changeUserPicture(
     userId: Pick<UserType, 'userId'>,
     userPicture: Pick<UserType, 'picture'>,

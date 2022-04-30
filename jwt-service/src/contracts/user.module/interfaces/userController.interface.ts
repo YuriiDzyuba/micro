@@ -1,9 +1,9 @@
 import { UserResponseInterface } from './userResponse.interface';
-import { CreateUserDto } from '../../../user.module/dto/createUser.dto';
 import { UserType } from '../../shared/user.type';
 
 export interface UserControllerInterface {
-  createUser(createUserDto: CreateUserDto): Promise<UserResponseInterface>;
+  createUser(createUserDto: Pick<UserType, 'password' | 'email' | 'userName' >): Promise<UserResponseInterface>;
+  logInUser(logInUserDto: Pick<UserType, 'password' | 'email' >): Promise<UserResponseInterface>;
   changeUserPicture(
     id: Pick<UserType, 'userId'>,
     updateUserPictureDto: Pick<UserType, 'picture'>,

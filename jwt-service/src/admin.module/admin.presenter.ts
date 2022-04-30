@@ -5,7 +5,7 @@ import { OneUserResponseInterface } from '../contracts/admin.module/interfaces/o
 import { RemovedUserResponseInterface } from '../contracts/admin.module/interfaces/removedUserResponse.interface';
 
 export class AdminPresenter implements AdminPresenterInterface {
-  buildManyUserResponse(users: UserType[]): ManyUsersResponseInterface {
+  buildManyUsersResponse(users: UserType[]): ManyUsersResponseInterface {
     return { users };
   }
 

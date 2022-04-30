@@ -1,7 +1,8 @@
 import { UserType } from '../../shared/user.type';
+import { SafeUserType } from "../../shared/safeUser.type";
 
 export interface AdminServiceInterface {
-  findUsers(): Promise<UserType[]>;
+  findUsers(): Promise<SafeUserType[]>;
   findUserById(id: Pick<UserType, 'userId'>): Promise<UserType>;
   removeUser(id: Pick<UserType, 'userId'>): Promise<void>;
 }
