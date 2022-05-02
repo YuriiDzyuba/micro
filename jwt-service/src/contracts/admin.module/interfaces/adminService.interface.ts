@@ -1,10 +1,10 @@
 import { UserType } from '../../shared/user.type';
-import { SafeUserType } from "../../shared/safeUser.type";
+import { SafeUserType } from '../../shared/safeUser.type';
 
 export interface AdminServiceInterface {
   findUsers(): Promise<SafeUserType[]>;
-  findUserById(id: Pick<UserType, 'userId'>): Promise<UserType>;
-  removeUser(id: Pick<UserType, 'userId'>): Promise<void>;
+  findUserById(userId: Pick<UserType, 'userId'>): Promise<SafeUserType>;
+  removeUser(userId: Pick<UserType, 'userId'>): Promise<void>;
 }
 
 export const AdminApiServiceInterfaceToken = Symbol('AdminServiceInterface');

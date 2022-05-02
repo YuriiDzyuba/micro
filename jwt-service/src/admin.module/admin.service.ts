@@ -3,11 +3,10 @@ import {
   UserServiceInterface,
   UserApiServiceInterfaceToken,
 } from '../contracts/user.module/interfaces/userService.interface';
-import { FindUserByIdDto } from '../user.module/dto/findUserById.dto';
 import { UserNotExistException } from '../user.module/exceptions/userNotExist.exception';
 import { AdminServiceInterface } from '../contracts/admin.module/interfaces/adminService.interface';
+import { SafeUserType } from '../contracts/shared/safeUser.type';
 import { UserType } from '../contracts/shared/user.type';
-import {SafeUserType} from "../contracts/shared/safeUser.type";
 
 @Injectable()
 export class AdminService implements AdminServiceInterface {
@@ -16,15 +15,15 @@ export class AdminService implements AdminServiceInterface {
     private userApiService: UserServiceInterface,
   ) {}
 
-  async findUserById(id: FindUserByIdDto): Promise<UserType> {
-    return await this.userApiService.findUserById(id);
+  async findUserById(userId: Pick<UserType, 'userId'>): Promise<SafeUserType> {
+    return await this.userApiService.findUserById(userId);
   }
 
   async findUsers(): Promise<SafeUserType[]> {
     return await this.userApiService.findUsers();
   }
 
-  async removeUser(userId: FindUserByIdDto) {
+  async removeUser(userId: Pick<UserType, 'userId'>) {
     const foundedUser = await this.userApiService.findUserById(userId);
 
     if (!foundedUser) throw new UserNotExistException();
