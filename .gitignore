@@ -4,6 +4,8 @@
 /jwt-db
 *.env
 /.env
+/frontend/.angular
+/frontend/.vscode
 
 # Logs
 logs
