@@ -25,6 +25,4 @@ export class onNewUserLetterCreator extends LetterCreatorInterfaces {
             subject: this.subject,
         };
     }
-
-
 }

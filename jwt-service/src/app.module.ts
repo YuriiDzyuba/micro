@@ -1,16 +1,18 @@
 import {
-  ClassSerializerInterceptor,
+  MiddlewareConsumer,
   Module,
+  RequestMethod,
   ValidationPipe,
 } from '@nestjs/common';
 import { UserModule } from './user.module/user.module';
 import { mongoDbUrl } from './config/config';
 import { AdminModule } from './admin.module/admin.module';
-import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.module/entity/user.entity';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EventsModule } from './events/events.module';
+import { AuthMiddleware } from './middlewares/auth.middleware';
 
 @Module({
   imports: [
@@ -28,14 +30,18 @@ import { EventsModule } from './events/events.module';
     EventsModule,
   ],
   providers: [
-    // {
-    //   provide: APP_PIPE,
-    //   useValue: new ValidationPipe({ transform: true }),
-    // },
-    // {
-    //   provide: APP_INTERCEPTOR,
-    //   useClass: ClassSerializerInterceptor,
-    // },
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({ transform: true }),
+    }
   ],
 })
-export class AppModule {}
+
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes({
+      path: '*',
+      method: RequestMethod.ALL,
+    });
+  }
+}
