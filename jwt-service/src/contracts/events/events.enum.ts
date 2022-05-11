@@ -1,3 +1,3 @@
 export enum EventsEnum {
-    userCreated = 'user.created'
+  userCreated = 'user.created',
 }

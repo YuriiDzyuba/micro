@@ -1,13 +1,13 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import {hostDomainGlobalPrefix} from "./config/config";
+import { hostDomainGlobalPrefix } from './config/config';
 
 async function bootstrap() {
   const PORT = process.env.PORT || 3000;
 
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix(hostDomainGlobalPrefix || 'jwt_api');
+  app.setGlobalPrefix(hostDomainGlobalPrefix || 'jwt-api');
   app.enableCors();
 
   const config = new DocumentBuilder()
@@ -17,13 +17,13 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(
-    `${ hostDomainGlobalPrefix || 'jwt-api'}/docs`,
+    `${hostDomainGlobalPrefix || 'jwt-api'}/docs`,
     app,
     document,
   );
 
-  await app.listen(PORT, () =>
-    console.log(`JWT server has been started on port ${PORT}`),
-  );
+  await app.listen(PORT, () => {
+    console.log(`JWT server has been started on port ${PORT}`);
+  });
 }
 bootstrap();

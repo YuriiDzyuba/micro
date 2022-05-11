@@ -7,9 +7,9 @@ import { User } from './entity/user.entity';
 import { UserPresenter } from './user.presenter';
 import { UserApiServiceInterfaceToken } from '../contracts/user.module/interfaces/userService.interface';
 import { UserApiPresenterInterfaceToken } from '../contracts/user.module/interfaces/userPresenter.interface';
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { EventsModule } from "../events/events.module";
-import { UserMappers } from "./user.mappers";
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { EventsModule } from '../events/events.module';
+import { UserMappers } from './user.mappers';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]), EventsModule],
@@ -25,7 +25,7 @@ import { UserMappers } from "./user.mappers";
     },
     CryptoService,
     UserRepository,
-    UserMappers
+    UserMappers,
   ],
   exports: [
     {

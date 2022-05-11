@@ -6,8 +6,8 @@ import {
   UsePipes,
   ValidationPipe,
   Inject,
+  ParseUUIDPipe,
 } from '@nestjs/common';
-import { FindUserByIdDto } from '../user.module/dto/findUserById.dto';
 import { AdminControllerInterface } from '../contracts/admin.module/interfaces/adminController.interface';
 import {
   AdminServiceInterface,
@@ -20,6 +20,7 @@ import {
 import { OneUserResponseInterface } from '../contracts/admin.module/interfaces/oneUserResponse.interface';
 import { ManyUsersResponseInterface } from '../contracts/admin.module/interfaces/manyUsersResponse.interface';
 import { RemovedUserResponseInterface } from '../contracts/admin.module/interfaces/removedUserResponse.interface';
+import { UserType } from '../contracts/shared/user.type';
 
 @Controller('admin')
 export class AdminController implements AdminControllerInterface {
@@ -37,21 +38,21 @@ export class AdminController implements AdminControllerInterface {
     return this.adminPresenter.buildManyUsersResponse(foundedUsers);
   }
 
-  @Get(':id')
-  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
+  @Get(':userId')
+  @UsePipes(new ValidationPipe())
   async findUserById(
-    @Param('id') id: FindUserByIdDto,
+    @Param('userId', new ParseUUIDPipe()) userId: Pick<UserType, 'userId'>,
   ): Promise<OneUserResponseInterface> {
-    const foundedUser = await this.apiService.findUserById(id);
+    const foundedUser = await this.apiService.findUserById(userId);
     return this.adminPresenter.buildOneUserResponse(foundedUser);
   }
 
-  @Delete(':id')
+  @Delete(':userId')
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async removeUser(
-    @Param('id') id: FindUserByIdDto,
+    @Param('userId', new ParseUUIDPipe()) userId: Pick<UserType, 'userId'>,
   ): Promise<RemovedUserResponseInterface> {
-    await this.apiService.removeUser(id);
-    return this.adminPresenter.buildRemovedUserResponse(id);
+    await this.apiService.removeUser(userId);
+    return this.adminPresenter.buildRemovedUserResponse(userId);
   }
 }

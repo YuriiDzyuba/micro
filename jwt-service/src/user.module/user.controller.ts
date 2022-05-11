@@ -7,12 +7,12 @@ import {
   UsePipes,
   ValidationPipe,
   Inject,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/createUser.dto';
 import { ChangeUserPictureDto } from './dto/changeUserPicture.dto';
 import { UserControllerInterface } from '../contracts/user.module/interfaces/userController.interface';
 import { UserResponseInterface } from '../contracts/user.module/interfaces/userResponse.interface';
-import { FindUserByIdDto } from './dto/findUserById.dto';
 import { ChangeUserNameDto } from './dto/changeUserName.dto';
 import {
   UserServiceInterface,
@@ -22,9 +22,11 @@ import {
   UserPresenterInterface,
   UserApiPresenterInterfaceToken,
 } from '../contracts/user.module/interfaces/userPresenter.interface';
-import {LoginUserDto} from "./dto/loginUser.dto";
+import { LoginUserDto } from './dto/loginUser.dto';
+import { UserType } from '../contracts/shared/user.type';
 
 @Controller('user')
+@UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
 export class UserController implements UserControllerInterface {
   constructor(
     @Inject(UserApiServiceInterfaceToken)
@@ -49,27 +51,25 @@ export class UserController implements UserControllerInterface {
     return this.userPresenter.buildUserResponse(logInnedUser);
   }
 
-  @Patch(':id/picture')
-  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
+  @Patch('picture/:userId')
   async changeUserPicture(
-    @Param('id') id: FindUserByIdDto,
+    @Param('userId', new ParseUUIDPipe()) userId: Pick<UserType, 'userId'>,
     @Body() changeUserPictureDto: ChangeUserPictureDto,
   ): Promise<UserResponseInterface> {
     const userWithChangedPicture = await this.userApiService.changeUserPicture(
-      id,
+      userId,
       changeUserPictureDto,
     );
     return this.userPresenter.buildUserResponse(userWithChangedPicture);
   }
 
-  @Patch(':id/name')
-  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
+  @Patch('name/:userId')
   async changeUserName(
-    @Param('id') id: FindUserByIdDto,
+    @Param('userId', new ParseUUIDPipe()) userId: Pick<UserType, 'userId'>,
     @Body() changeUserNameDto: ChangeUserNameDto,
   ): Promise<UserResponseInterface> {
     const userWithChangedName = await this.userApiService.changeUserName(
-      id,
+      userId,
       changeUserNameDto,
     );
     return this.userPresenter.buildUserResponse(userWithChangedName);

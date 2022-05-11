@@ -1,17 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UserRepository } from './user.repository';
-import { UserExistException, UserNotExistException, WrongPasswordException } from './exceptions/userNotExist.exception';
+import {
+  CantUpdateUserException,
+  UserExistException,
+  UserNotExistException,
+  WrongPasswordException,
+} from './exceptions/userNotExist.exception';
 import { CryptoService } from './crypto.service';
-import { FindUserByIdDto } from './dto/findUserById.dto';
-import { ChangeUserPictureDto } from './dto/changeUserPicture.dto';
-import { ChangeUserNameDto } from './dto/changeUserName.dto';
 import { UserServiceInterface } from '../contracts/user.module/interfaces/userService.interface';
-import { SafeUserType } from "../contracts/shared/safeUser.type";
-import { EventsService } from "../events/events.service";
-import { LoginUserDto } from "./dto/loginUser.dto";
-import { User } from "./entity/user.entity";
-import { UserMappers } from "./user.mappers";
+import { SafeUserType } from '../contracts/shared/safeUser.type';
+import { EventsService } from '../events/events.service';
+import { LoginUserDto } from './dto/loginUser.dto';
+import { User } from './entity/user.entity';
+import { UserMappers } from './user.mappers';
+import { UserType } from '../contracts/shared/user.type';
 
 @Injectable()
 export class UserService implements UserServiceInterface {
@@ -43,13 +46,15 @@ export class UserService implements UserServiceInterface {
   }
 
   async loginUser(candidate: LoginUserDto): Promise<SafeUserType> {
-    const userEntityByEmail: User = await this.userRepository.findUserByEmail( candidate.email );
+    const userEntityByEmail: User = await this.userRepository.findUserByEmail(
+      candidate.email,
+    );
 
     if (!userEntityByEmail) throw new UserNotExistException();
 
     const isPasswordCorrect = await this.password.compare(
-        userEntityByEmail.password,
-        candidate.password,
+      userEntityByEmail.password,
+      candidate.password,
     );
 
     if (!isPasswordCorrect) throw new WrongPasswordException();
@@ -61,33 +66,41 @@ export class UserService implements UserServiceInterface {
     return await this.userRepository.findUsers();
   }
 
-  async findUserById(userId: FindUserByIdDto): Promise<SafeUserType> {
-    return await this.userRepository.findUserById(userId);
+  async findUserById(userId: Pick<UserType, 'userId'>): Promise<SafeUserType> {
+    return await this.userRepository.findUserById(userId.toString());
   }
 
   async changeUserPicture(
-    userId: FindUserByIdDto,
-    userPicture: ChangeUserPictureDto,
+    userId: Pick<UserType, 'userId'>,
+    userPicture: Pick<UserType, 'picture'>,
   ): Promise<SafeUserType> {
     const foundedUser = await this.findUserById(userId);
 
     if (!foundedUser) throw new UserNotExistException();
 
-    return await this.userRepository.updateUserField( userId , userPicture);
+    const result = await this.userRepository.updateUserField(userId.toString(), userPicture);
+
+    if (!result) throw new CantUpdateUserException();
+
+    return { ...foundedUser, ...userPicture };
   }
 
   async changeUserName(
-    userId: FindUserByIdDto,
-    userName: ChangeUserNameDto,
+    userId: Pick<UserType, 'userId'>,
+    userName: Pick<UserType, 'userName'>,
   ): Promise<SafeUserType> {
     const foundedUser = await this.findUserById(userId);
 
     if (!foundedUser) throw new UserNotExistException();
 
-    return await this.userRepository.updateUserField( userId , userName);
+    const result = this.userRepository.updateUserField(userId.toString(), userName);
+
+    if (!result) throw new CantUpdateUserException();
+
+    return { ...foundedUser, ...userName };
   }
 
-  async removeUser(userId: FindUserByIdDto): Promise<void> {
-    await this.userRepository.removeUser(userId);
+  async removeUser(userId: Pick<UserType, 'userId'>): Promise<void> {
+    await this.userRepository.removeUser(userId.toString());
   }
 }
