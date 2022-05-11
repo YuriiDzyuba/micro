@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
-import { UserType } from '../../contracts/shared/user.type';
+import { UserType } from '../types/user.type';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ChangeUserPictureDto implements Pick<UserType, 'picture'> {

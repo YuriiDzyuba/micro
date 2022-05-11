@@ -8,13 +8,13 @@ import {
   WrongPasswordException,
 } from './exceptions/userNotExist.exception';
 import { CryptoService } from './crypto.service';
-import { UserServiceInterface } from '../contracts/user.module/interfaces/userService.interface';
-import { SafeUserType } from '../contracts/shared/safeUser.type';
-import { EventsService } from '../events/events.service';
+import { UserServiceInterface } from './types/userService.interface';
+import { SafeUserType } from './types/safeUser.type';
+import { EventsService } from '../events.module/events.service';
 import { LoginUserDto } from './dto/loginUser.dto';
 import { User } from './entity/user.entity';
 import { UserMappers } from './user.mappers';
-import { UserType } from '../contracts/shared/user.type';
+import { UserType } from './types/user.type';
 
 @Injectable()
 export class UserService implements UserServiceInterface {

@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { SafeUserType } from '../contracts/shared/safeUser.type';
+import { SafeUserType } from '../user.module/types/safeUser.type';
 import { ClientProxy } from '@nestjs/microservices';
-import { EventsEnum } from '../contracts/events/events.enum';
+import { EventsEnum } from './types/events.enum';
 
 @Injectable()
 export class EventsService {

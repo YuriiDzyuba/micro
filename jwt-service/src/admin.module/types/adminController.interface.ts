@@ -1,4 +1,4 @@
-import { UserType } from '../../shared/user.type';
+import { UserType } from '../../user.module/types/user.type';
 import { OneUserResponseInterface } from './oneUserResponse.interface';
 import { ManyUsersResponseInterface } from './manyUsersResponse.interface';
 import { RemovedUserResponseInterface } from './removedUserResponse.interface';

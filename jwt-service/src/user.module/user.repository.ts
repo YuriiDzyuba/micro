@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/createUser.dto';
 import { User } from './entity/user.entity';
-import { SafeUserType } from '../contracts/shared/safeUser.type';
+import { SafeUserType } from './types/safeUser.type';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MongoRepository, UpdateWriteOpResult } from 'typeorm';
 import { UserMappers } from './user.mappers';

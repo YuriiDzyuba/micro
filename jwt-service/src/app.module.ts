@@ -11,7 +11,7 @@ import { APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.module/entity/user.entity';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { EventsModule } from './events/events.module';
+import { EventsModule } from './events.module/events.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 
 @Module({

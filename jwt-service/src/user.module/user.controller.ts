@@ -11,20 +11,23 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/createUser.dto';
 import { ChangeUserPictureDto } from './dto/changeUserPicture.dto';
-import { UserControllerInterface } from '../contracts/user.module/interfaces/userController.interface';
-import { UserResponseInterface } from '../contracts/user.module/interfaces/userResponse.interface';
+import { UserControllerInterface } from './types/userController.interface';
+import { UserResponseInterface } from './types/userResponse.interface';
 import { ChangeUserNameDto } from './dto/changeUserName.dto';
 import {
   UserServiceInterface,
   UserApiServiceInterfaceToken,
-} from '../contracts/user.module/interfaces/userService.interface';
+} from './types/userService.interface';
 import {
   UserPresenterInterface,
   UserApiPresenterInterfaceToken,
-} from '../contracts/user.module/interfaces/userPresenter.interface';
+} from './types/userPresenter.interface';
 import { LoginUserDto } from './dto/loginUser.dto';
-import { UserType } from '../contracts/shared/user.type';
+import { UserType } from './types/user.type';
+import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {createNewUser, updateCurrentUser} from './consts/user.swagger.consts';
 
+@ApiTags('user module')
 @Controller('user')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
 export class UserController implements UserControllerInterface {
@@ -35,6 +38,8 @@ export class UserController implements UserControllerInterface {
     private userPresenter: UserPresenterInterface,
   ) {}
 
+  // @ApiOperation(createNewUser.apiOperation)
+  // @ApiResponse(createNewUser.apiResponse)
   @Post()
   async createUser(
     @Body() createUserDto: CreateUserDto,
@@ -43,6 +48,8 @@ export class UserController implements UserControllerInterface {
     return this.userPresenter.buildUserResponse(createdUser);
   }
 
+  // @ApiOperation(createNewUser.apiOperation)
+  // @ApiResponse(createNewUser.apiResponse)
   @Post('login')
   async logInUser(
     @Body() logUserDto: LoginUserDto,
@@ -51,6 +58,8 @@ export class UserController implements UserControllerInterface {
     return this.userPresenter.buildUserResponse(logInnedUser);
   }
 
+  // @ApiOperation(updateCurrentUser.apiOperation)
+  // @ApiResponse(updateCurrentUser.apiResponse)
   @Patch('picture/:userId')
   async changeUserPicture(
     @Param('userId', new ParseUUIDPipe()) userId: Pick<UserType, 'userId'>,

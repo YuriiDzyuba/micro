@@ -8,19 +8,19 @@ import {
   Inject,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { AdminControllerInterface } from '../contracts/admin.module/interfaces/adminController.interface';
+import { AdminControllerInterface } from './types/adminController.interface';
 import {
   AdminServiceInterface,
   AdminApiServiceInterfaceToken,
-} from '../contracts/admin.module/interfaces/adminService.interface';
+} from './types/adminService.interface';
 import {
   AdminPresenterInterface,
   AdminApiPresenterInterfaceToken,
-} from '../contracts/admin.module/interfaces/adminPresenter.interface';
-import { OneUserResponseInterface } from '../contracts/admin.module/interfaces/oneUserResponse.interface';
-import { ManyUsersResponseInterface } from '../contracts/admin.module/interfaces/manyUsersResponse.interface';
-import { RemovedUserResponseInterface } from '../contracts/admin.module/interfaces/removedUserResponse.interface';
-import { UserType } from '../contracts/shared/user.type';
+} from './types/adminPresenter.interface';
+import { OneUserResponseInterface } from './types/oneUserResponse.interface';
+import { ManyUsersResponseInterface } from './types/manyUsersResponse.interface';
+import { RemovedUserResponseInterface } from './types/removedUserResponse.interface';
+import { UserType } from '../user.module/types/user.type';
 
 @Controller('admin')
 export class AdminController implements AdminControllerInterface {

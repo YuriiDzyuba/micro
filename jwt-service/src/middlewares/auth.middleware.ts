@@ -1,18 +1,19 @@
 import {
   HttpException,
-  HttpStatus,
+  HttpStatus, Inject,
   Injectable,
   NestMiddleware,
 } from '@nestjs/common';
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
-import { UserService } from '../user.module/user.service';
-import { ExpressRequestInterface } from "../contracts/shared/expressRequest.interface";
+import { ExpressRequestInterface } from "../types/expressRequest.interface";
+import { UserApiServiceInterfaceToken, UserServiceInterface } from "../user.module/types/userService.interface";
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   constructor(
-      private readonly userService: UserService
+      @Inject(UserApiServiceInterfaceToken)
+      private userApiService: UserServiceInterface,
   ) {}
   async use(req: ExpressRequestInterface, res: Response, next: NextFunction) {
     if (!req.headers.authorization) {
@@ -37,7 +38,7 @@ export class AuthMiddleware implements NestMiddleware {
           ? process.env.ACCESS_JWT_SECRET
           : process.env.REFRESH_JWT_SECRET,
       );
-      const user = await this.userService.findUserById(decodedUserData.id);
+      const user = await this.userApiService.findUserById(decodedUserData.id);
 
       if (!user) {
         throw new Error();
@@ -49,7 +50,6 @@ export class AuthMiddleware implements NestMiddleware {
     } catch (err) {
       throw new HttpException(`invalid ${tokenName}`, HttpStatus.UNAUTHORIZED);
     }
-
     next();
   }
 }

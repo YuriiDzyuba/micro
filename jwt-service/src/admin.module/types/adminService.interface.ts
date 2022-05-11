@@ -1,5 +1,5 @@
-import { UserType } from '../../shared/user.type';
-import { SafeUserType } from '../../shared/safeUser.type';
+import { UserType } from '../../user.module/types/user.type';
+import { SafeUserType } from '../../user.module/types/safeUser.type';
 
 export interface AdminServiceInterface {
   findUsers(): Promise<SafeUserType[]>;

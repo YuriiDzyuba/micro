@@ -1,5 +1,5 @@
-import { UserType } from '../../shared/user.type';
-import { SafeUserType } from '../../shared/safeUser.type';
+import { UserType } from './user.type';
+import { SafeUserType } from './safeUser.type';
 
 export interface UserServiceInterface {
   createUser(

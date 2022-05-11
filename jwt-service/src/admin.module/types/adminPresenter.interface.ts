@@ -1,8 +1,8 @@
-import { UserType } from '../../shared/user.type';
+import { UserType } from '../../user.module/types/user.type';
 import { OneUserResponseInterface } from './oneUserResponse.interface';
 import { ManyUsersResponseInterface } from './manyUsersResponse.interface';
 import { RemovedUserResponseInterface } from './removedUserResponse.interface';
-import { SafeUserType } from '../../shared/safeUser.type';
+import { SafeUserType } from '../../user.module/types/safeUser.type';
 
 export interface AdminPresenterInterface {
   buildOneUserResponse(user: SafeUserType): OneUserResponseInterface;

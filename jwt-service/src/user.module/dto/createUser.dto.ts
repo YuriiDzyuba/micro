@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
-import { UserType } from '../../contracts/shared/user.type';
+import { UserType } from '../types/user.type';
 
 export class CreateUserDto
   implements Pick<UserType, 'password' | 'userName' | 'email'>

@@ -1,8 +1,8 @@
-import { ManyUsersResponseInterface } from '../contracts/admin.module/interfaces/manyUsersResponse.interface';
-import { AdminPresenterInterface } from '../contracts/admin.module/interfaces/adminPresenter.interface';
-import { UserType } from '../contracts/shared/user.type';
-import { OneUserResponseInterface } from '../contracts/admin.module/interfaces/oneUserResponse.interface';
-import { RemovedUserResponseInterface } from '../contracts/admin.module/interfaces/removedUserResponse.interface';
+import { ManyUsersResponseInterface } from './types/manyUsersResponse.interface';
+import { AdminPresenterInterface } from './types/adminPresenter.interface';
+import { UserType } from '../user.module/types/user.type';
+import { OneUserResponseInterface } from './types/oneUserResponse.interface';
+import { RemovedUserResponseInterface } from './types/removedUserResponse.interface';
 
 export class AdminPresenter implements AdminPresenterInterface {
   buildManyUsersResponse(users: UserType[]): ManyUsersResponseInterface {

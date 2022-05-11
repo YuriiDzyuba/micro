@@ -2,11 +2,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   UserServiceInterface,
   UserApiServiceInterfaceToken,
-} from '../contracts/user.module/interfaces/userService.interface';
+} from '../user.module/types/userService.interface';
 import { UserNotExistException } from '../user.module/exceptions/userNotExist.exception';
-import { AdminServiceInterface } from '../contracts/admin.module/interfaces/adminService.interface';
-import { SafeUserType } from '../contracts/shared/safeUser.type';
-import { UserType } from '../contracts/shared/user.type';
+import { AdminServiceInterface } from './types/adminService.interface';
+import { SafeUserType } from '../user.module/types/safeUser.type';
+import { UserType } from '../user.module/types/user.type';
 
 @Injectable()
 export class AdminService implements AdminServiceInterface {

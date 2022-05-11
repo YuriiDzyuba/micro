@@ -1,5 +1,5 @@
 import { UserResponseInterface } from './userResponse.interface';
-import { UserType } from '../../shared/user.type';
+import { UserType } from './user.type';
 
 export interface UserControllerInterface {
   createUser(

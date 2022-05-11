@@ -5,10 +5,10 @@ import { CryptoService } from './crypto.service';
 import { UserRepository } from './user.repository';
 import { User } from './entity/user.entity';
 import { UserPresenter } from './user.presenter';
-import { UserApiServiceInterfaceToken } from '../contracts/user.module/interfaces/userService.interface';
-import { UserApiPresenterInterfaceToken } from '../contracts/user.module/interfaces/userPresenter.interface';
+import { UserApiServiceInterfaceToken } from './types/userService.interface';
+import { UserApiPresenterInterfaceToken } from './types/userPresenter.interface';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EventsModule } from '../events/events.module';
+import { EventsModule } from '../events.module/events.module';
 import { UserMappers } from './user.mappers';
 
 @Module({

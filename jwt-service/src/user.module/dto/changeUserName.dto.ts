@@ -1,4 +1,4 @@
-import { UserType } from '../../contracts/shared/user.type';
+import { UserType } from '../types/user.type';
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 

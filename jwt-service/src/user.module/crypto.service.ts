@@ -3,7 +3,7 @@ import { sign } from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 import { promisify } from 'util';
 import { Injectable } from '@nestjs/common';
-import { SafeUserType } from '../contracts/shared/safeUser.type';
+import { SafeUserType } from './types/safeUser.type';
 import {
   accessJwtExpIn,
   accessJwtSecret,
