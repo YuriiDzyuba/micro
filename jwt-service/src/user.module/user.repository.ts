@@ -20,7 +20,14 @@ export class UserRepository {
     email: string,
     userName: string,
   ): Promise<User> {
-    return await this.userModel.findOne({ email, userName });
+    return await this.userModel.findOne({
+      where: {
+        $or: [
+          { email },
+          { userName }
+        ]
+      }
+    });
   }
 
   async findUserByEmail(email: string): Promise<User> {
