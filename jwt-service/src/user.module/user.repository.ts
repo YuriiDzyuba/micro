@@ -19,8 +19,8 @@ export class UserRepository {
   async findUserByEmailAndUserName(
     email: string,
     userName: string,
-  ): Promise<User> {
-    return await this.userModel.findOne({
+  ): Promise <SafeUserType> {
+    const foundedUser =  await this.userModel.findOne({
       where: {
         $or: [
           { email },
@@ -28,6 +28,10 @@ export class UserRepository {
         ]
       }
     });
+
+    return foundedUser
+        ? this.userMapper.mapUserEntityToSafeUser(foundedUser)
+        : null;
   }
 
   async findUserByEmail(email: string): Promise<User> {

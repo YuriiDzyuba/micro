@@ -36,9 +36,6 @@ export class User implements UserType {
   public verifiedEmail: boolean;
 
   @Column()
-  public verifyEmailLink: string;
-
-  @Column()
   public picture: string;
 
   @Column()
@@ -50,8 +47,8 @@ export class User implements UserType {
   constructor() {
     this.userId = uuidv4();
     this.createdAt = Date.now();
+    this.updatedAt = null;
     this.verifiedEmail = false;
-    this.verifyEmailLink = uuidv4();
     this.roles = [UserRoleEnum.user];
   }
 }

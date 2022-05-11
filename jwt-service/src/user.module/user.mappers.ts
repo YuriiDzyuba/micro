@@ -8,7 +8,6 @@ export class UserMappers {
       userName: user.userName,
       email: user.email,
       verifiedEmail: user.verifiedEmail,
-      verifyEmailLink: user.verifyEmailLink,
       picture: user.picture,
       roles: user.roles,
       createdAt: user.createdAt,
