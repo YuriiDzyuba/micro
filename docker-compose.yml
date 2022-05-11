@@ -57,10 +57,13 @@ services:
       - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
     networks:
       - jwt-docker-network
+    restart:
+      unless-stopped
     depends_on:
       - jwt-service
       - jwt-db
       - redis
+      - email-service
 
 networks:
   jwt-docker-network:
