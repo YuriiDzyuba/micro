@@ -10,6 +10,7 @@ import { AuthService } from "./services/auth.service";
 import {EffectsModule} from "@ngrx/effects";
 import {RegisterEffect} from "./effects/register.effect";
 import {BackEndErrorMessagesModule} from "../shared/modules/backEndErrorMessages/backEndErrorMessages.module";
+import {PersistenceService} from "../shared/services/persistenceService";
 
 @NgModule({
   imports:[
@@ -21,7 +22,7 @@ import {BackEndErrorMessagesModule} from "../shared/modules/backEndErrorMessages
     EffectsModule.forFeature([RegisterEffect])
   ],
   declarations:[RegisterComponent],
-  providers:[AuthService]
+  providers:[AuthService, PersistenceService]
 })
 
 export class AuthModule {}
