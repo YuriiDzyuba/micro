@@ -1,5 +1,5 @@
-export interface RegisterRequestInterface {
-    userName: string,
-    email: string,
+import {LoginRequestInterface} from "./loginRequest.interface";
+
+export interface RegisterRequestInterface extends LoginRequestInterface{
     password: string
 }

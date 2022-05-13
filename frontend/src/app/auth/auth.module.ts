@@ -7,10 +7,12 @@ import { AuthRoutingModule } from "./auth-routing.module";
 import { StoreModule } from "@ngrx/store";
 import { authReducer } from "./store/reducers";
 import { AuthService } from "./services/auth.service";
-import {EffectsModule} from "@ngrx/effects";
-import {RegisterEffect} from "./effects/register.effect";
-import {BackEndErrorMessagesModule} from "../shared/modules/backEndErrorMessages/backEndErrorMessages.module";
-import {PersistenceService} from "../shared/services/persistenceService";
+import { EffectsModule } from "@ngrx/effects";
+import { RegisterEffect } from "./effects/register.effect";
+import { BackEndErrorMessagesModule } from "../shared/modules/backEndErrorMessages/backEndErrorMessages.module";
+import { PersistenceService } from "../shared/services/persistenceService";
+import { LoginEffect } from "./effects/login.effect";
+import { LoginComponent } from "./components/login/login.component";
 
 @NgModule({
   imports:[
@@ -19,9 +21,9 @@ import {PersistenceService} from "../shared/services/persistenceService";
     AuthRoutingModule,
     ReactiveFormsModule,
     StoreModule.forFeature('auth', authReducer),
-    EffectsModule.forFeature([RegisterEffect])
+    EffectsModule.forFeature([RegisterEffect, LoginEffect])
   ],
-  declarations:[RegisterComponent],
+  declarations:[RegisterComponent, LoginComponent],
   providers:[AuthService, PersistenceService]
 })
 

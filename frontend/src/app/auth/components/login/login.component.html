@@ -2,9 +2,9 @@
   <div class="container page">
     <div class="row">
       <div class="col-md-6 offset-md-3 col-xs-12">
-        <h1 class="text-xs-center">Sign Up</h1>
+        <h1 class="text-xs-center">Sign In</h1>
         <p class="text-xs-center">
-          <a [routerLink]="['/login']"> Have an account?</a>
+          <a [routerLink]="['/register']"> Need an account?</a>
         </p>
         <mc-backend-error-messages
           *ngIf="bacEndErrors$ | async"
@@ -12,14 +12,6 @@
         ></mc-backend-error-messages>
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <fieldset>
-            <fieldset class="form-group">
-              <input
-                type="text"
-                class="form-control form-control-lg"
-                placeholder="Username"
-                formControlName="userName"
-              />
-            </fieldset>
             <fieldset class="form-group">
               <input
                 type="text"
@@ -37,7 +29,7 @@
               />
             </fieldset>
             <button class="btn btn-lg btn-primary pull-xs-right" type="submit" [disabled]="isSubmitting$ | async">
-              Sign up
+              Sign in
             </button>
           </fieldset>
         </form>
