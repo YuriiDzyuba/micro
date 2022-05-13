@@ -1,19 +1,19 @@
-import { UserResponseInterface } from './userResponse.interface';
+import { UserResponseType } from './user.response.type';
 import { UserType } from './user.type';
 
 export interface UserControllerInterface {
   createUser(
     createUserDto: Pick<UserType, 'password' | 'email' | 'userName'>,
-  ): Promise<UserResponseInterface>;
+  ): Promise<UserResponseType>;
   logInUser(
     logInUserDto: Pick<UserType, 'password' | 'email'>,
-  ): Promise<UserResponseInterface>;
+  ): Promise<UserResponseType>;
   changeUserPicture(
     id: Pick<UserType, 'userId'>,
     updateUserPictureDto: Pick<UserType, 'picture'>,
-  ): Promise<UserResponseInterface>;
+  ): Promise<UserResponseType>;
   changeUserName(
     id: Pick<UserType, 'userId'>,
     updateUserNameDto: Pick<UserType, 'userName'>,
-  ): Promise<UserResponseInterface>;
+  ): Promise<UserResponseType>;
 }

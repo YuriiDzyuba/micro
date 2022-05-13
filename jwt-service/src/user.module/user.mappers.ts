@@ -1,8 +1,8 @@
-import { User } from './entity/user.entity';
 import { SafeUserType } from './types/safeUser.type';
+import {UserType} from "./types/user.type";
 
 export class UserMappers {
-  mapUserEntityToSafeUser(user: User): SafeUserType {
+  mapUserEntityToSafeUser(user: UserType): SafeUserType {
     return {
       userId: user.userId,
       userName: user.userName,
@@ -15,7 +15,7 @@ export class UserMappers {
     };
   }
 
-  mapUserEntitiesToSafeUsers(users: User[]): SafeUserType[] {
+  mapUserEntitiesToSafeUsers(users: UserType[]): SafeUserType[] {
     return users.map((user) => this.mapUserEntityToSafeUser(user));
   }
 }

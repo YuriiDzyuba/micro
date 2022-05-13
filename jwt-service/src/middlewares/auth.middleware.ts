@@ -1,19 +1,23 @@
 import {
   HttpException,
-  HttpStatus, Inject,
+  HttpStatus,
+  Inject,
   Injectable,
   NestMiddleware,
 } from '@nestjs/common';
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
-import { ExpressRequestInterface } from "../types/expressRequest.interface";
-import { UserApiServiceInterfaceToken, UserServiceInterface } from "../user.module/types/userService.interface";
+import { ExpressRequestInterface } from '../types/expressRequest.interface';
+import {
+  UserApiServiceInterfaceToken,
+  UserServiceInterface,
+} from '../user.module/types/userService.interface';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   constructor(
-      @Inject(UserApiServiceInterfaceToken)
-      private userApiService: UserServiceInterface,
+    @Inject(UserApiServiceInterfaceToken)
+    private userApiService: UserServiceInterface,
   ) {}
   async use(req: ExpressRequestInterface, res: Response, next: NextFunction) {
     if (!req.headers.authorization) {

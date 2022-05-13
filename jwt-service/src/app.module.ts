@@ -13,13 +13,15 @@ import { User } from './user.module/entity/user.entity';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EventsModule } from './events.module/events.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
+import { EmailActivationLink } from './user.module/entity/emailActivationLink.entity';
 
 @Module({
   imports: [
     UserModule,
+    EventsModule,
     EventEmitterModule.forRoot(),
     TypeOrmModule.forRoot({
-      entities: [User],
+      entities: [User, EmailActivationLink],
       type: 'mongodb',
       url: mongoDbUrl,
       synchronize: true,
@@ -27,16 +29,14 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
       logging: true,
     }),
     AdminModule,
-    EventsModule,
   ],
   providers: [
     {
       provide: APP_PIPE,
       useValue: new ValidationPipe({ transform: true }),
-    }
+    },
   ],
 })
-
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).forRoutes({

@@ -1,45 +1,45 @@
-
-const userResponse = {
-  user: {
-    userId: "9a68ff4f-c05e-4c3b-b888-70f1b613c325",
-    userName: "newUser",
-    email: "newuser@mail.de",
-    createdAt: 1652254141932,
-    accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlhNjhmZjRmLWMwNWUtNGMzYi1iODg4LTcwZjFiNjEzYzMyNSIsInVzZXJuYW1lIjoicHdxb2wxNCIsImVtYWlsIjoicG93cXdsQG1haWwuZGUiLCJpYXQiOjE2NTIyNTQxNDEsImV4cCI6MTY1MjI2MTM0MX0.xIoRc51JcMNNsDtiDhFGCQR0_qTQClLE08mAF4dYYo8",
-    refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlhNjhmZjRmLWMwNWUtNGMzYi1iODg4LTcwZjFiNjEzYzMyNSIsInVzZXJuYW1lIjoicHdxb2wxNCIsImVtYWlsIjoicG93cXdsQG1haWwuZGUiLCJpYXQiOjE2NTIyNTQxNDEsImV4cCI6MTY1MjI3NTc0MX0.SNlmCu1FRKeIqWMI7GsgMUJ84t4hM293qubLat-mNmI"
-  }
-}
+import { UserResponsePresentation } from "../presentations/userResponse.presentation";
 
 export const createNewUser = {
   apiOperation: {
-    summary: 'create new user by email and password',
+    summary: 'create new user by email, user name and password',
   },
   apiResponse: {
     status: 201,
     description: 'created new user',
-    type: userResponse,
+    type: UserResponsePresentation,
   },
 };
 
-export const findUserById = {
+export const logInUser = {
   apiOperation: {
-    summary: 'find one user by id',
+    summary: 'log In User with email and password',
   },
   apiResponse: {
     status: 200,
-    description: 'founded user',
-    type: userResponse,
+    description: 'return existed user',
+    type: UserResponsePresentation,
   },
 };
 
-export const updateCurrentUser = {
+export const changeUserPicture = {
   apiOperation: {
-    summary: 'update current user ',
+    summary: 'change current user picture ',
   },
   apiResponse: {
     status: 200,
-    description: 'updated user',
-    type: userResponse,
+    description: 'return updated user with new picture url or null',
+    type: UserResponsePresentation,
   },
 };
 
+export const changeUserName = {
+  apiOperation: {
+    summary: 'change current user name',
+  },
+  apiResponse: {
+    status: 200,
+    description: 'return updated user with new userName',
+    type: UserResponsePresentation,
+  },
+};

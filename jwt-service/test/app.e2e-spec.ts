@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { UserModule } from "../dist/user/user.module";
+import { UserModule } from '../dist/user/user.module';
 
 describe('jwt (e2e)', () => {
   let app: INestApplication;
@@ -16,8 +16,6 @@ describe('jwt (e2e)', () => {
   });
 
   it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/user')
-      .expect(200)
+    return request(app.getHttpServer()).get('/user').expect(200);
   });
 });

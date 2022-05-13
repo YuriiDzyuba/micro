@@ -1,10 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
-import { UserType } from '../types/user.type';
+import { CreateUserRequestType } from '../types/createUser.request.type';
 
-export class CreateUserDto
-  implements Pick<UserType, 'password' | 'userName' | 'email'>
-{
+export class CreateUserDto implements CreateUserRequestType {
   @ApiProperty({ example: 'pol14', description: 'nicName - should be unique' })
   @MinLength(2)
   @MaxLength(22)

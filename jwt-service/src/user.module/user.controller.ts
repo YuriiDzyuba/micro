@@ -12,7 +12,6 @@ import {
 import { CreateUserDto } from './dto/createUser.dto';
 import { ChangeUserPictureDto } from './dto/changeUserPicture.dto';
 import { UserControllerInterface } from './types/userController.interface';
-import { UserResponseInterface } from './types/userResponse.interface';
 import { ChangeUserNameDto } from './dto/changeUserName.dto';
 import {
   UserServiceInterface,
@@ -24,10 +23,11 @@ import {
 } from './types/userPresenter.interface';
 import { LoginUserDto } from './dto/loginUser.dto';
 import { UserType } from './types/user.type';
-import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {createNewUser, updateCurrentUser} from './consts/user.swagger.consts';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { createNewUser, logInUser, changeUserPicture, changeUserName } from './consts/user.swagger.consts';
+import { UserResponsePresentation } from "./presentations/userResponse.presentation";
 
-@ApiTags('user module')
+@ApiTags('user routes')
 @Controller('user')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
 export class UserController implements UserControllerInterface {
@@ -38,49 +38,54 @@ export class UserController implements UserControllerInterface {
     private userPresenter: UserPresenterInterface,
   ) {}
 
-  // @ApiOperation(createNewUser.apiOperation)
-  // @ApiResponse(createNewUser.apiResponse)
+  @ApiOperation(createNewUser.apiOperation)
+  @ApiResponse(createNewUser.apiResponse)
   @Post()
   async createUser(
     @Body() createUserDto: CreateUserDto,
-  ): Promise<UserResponseInterface> {
+  ): Promise<UserResponsePresentation> {
     const createdUser = await this.userApiService.createUser(createUserDto);
-    return this.userPresenter.buildUserResponse(createdUser);
+    return this.userPresenter.mapUserResponse(createdUser);
   }
 
-  // @ApiOperation(createNewUser.apiOperation)
-  // @ApiResponse(createNewUser.apiResponse)
+  @ApiOperation(logInUser.apiOperation)
+  @ApiResponse(logInUser.apiResponse)
+  @ApiBearerAuth()
   @Post('login')
   async logInUser(
     @Body() logUserDto: LoginUserDto,
-  ): Promise<UserResponseInterface> {
+  ): Promise<UserResponsePresentation> {
     const logInnedUser = await this.userApiService.loginUser(logUserDto);
-    return this.userPresenter.buildUserResponse(logInnedUser);
+    return this.userPresenter.mapUserResponse(logInnedUser);
   }
 
-  // @ApiOperation(updateCurrentUser.apiOperation)
-  // @ApiResponse(updateCurrentUser.apiResponse)
+  @ApiOperation(changeUserPicture.apiOperation)
+  @ApiResponse(changeUserPicture.apiResponse)
+  @ApiBearerAuth()
   @Patch('picture/:userId')
   async changeUserPicture(
     @Param('userId', new ParseUUIDPipe()) userId: Pick<UserType, 'userId'>,
     @Body() changeUserPictureDto: ChangeUserPictureDto,
-  ): Promise<UserResponseInterface> {
+  ): Promise<UserResponsePresentation> {
     const userWithChangedPicture = await this.userApiService.changeUserPicture(
       userId,
       changeUserPictureDto,
     );
-    return this.userPresenter.buildUserResponse(userWithChangedPicture);
+    return this.userPresenter.mapUserResponse(userWithChangedPicture);
   }
 
+  @ApiOperation(changeUserName.apiOperation)
+  @ApiResponse(changeUserName.apiResponse)
+  @ApiBearerAuth()
   @Patch('name/:userId')
   async changeUserName(
     @Param('userId', new ParseUUIDPipe()) userId: Pick<UserType, 'userId'>,
     @Body() changeUserNameDto: ChangeUserNameDto,
-  ): Promise<UserResponseInterface> {
+  ): Promise<UserResponsePresentation> {
     const userWithChangedName = await this.userApiService.changeUserName(
       userId,
       changeUserNameDto,
     );
-    return this.userPresenter.buildUserResponse(userWithChangedName);
+    return this.userPresenter.mapUserResponse(userWithChangedName);
   }
 }

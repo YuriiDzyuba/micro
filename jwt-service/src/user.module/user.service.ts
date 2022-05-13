@@ -1,31 +1,31 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/createUser.dto';
-import { UserRepository } from './user.repository';
+import {Injectable} from '@nestjs/common';
+import {CreateUserDto} from './dto/createUser.dto';
+import {UserRepository} from './user.repository';
 import {
   CantUpdateUserException,
   UserExistException,
   UserNotExistException,
   WrongPasswordException,
 } from './exceptions/userNotExist.exception';
-import { CryptoService } from './crypto.service';
-import { UserServiceInterface } from './types/userService.interface';
-import { SafeUserType } from './types/safeUser.type';
-import { EventsService } from '../events.module/events.service';
-import { LoginUserDto } from './dto/loginUser.dto';
-import { User } from './entity/user.entity';
-import { UserMappers } from './user.mappers';
-import { UserType } from './types/user.type';
+import {CryptoService} from './crypto.service';
+import {UserServiceInterface} from './types/userService.interface';
+import {SafeUserType} from './types/safeUser.type';
+import {EventsService} from '../events.module/events.service';
+import {LoginUserDto} from './dto/loginUser.dto';
+import {User} from './entity/user.entity';
+import {UserType} from './types/user.type';
+import {EmailActivationLink} from './entity/emailActivationLink.entity';
+import {SafeUserWithTokensType} from "./types/safeUserWithTokens.type";
 
 @Injectable()
 export class UserService implements UserServiceInterface {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly password: CryptoService,
+    private readonly cryptoService: CryptoService,
     private readonly eventService: EventsService,
-    private readonly userMapper: UserMappers,
   ) {}
 
-  async createUser(candidate: CreateUserDto): Promise<SafeUserType> {
+  async createUser(candidate: CreateUserDto): Promise<SafeUserWithTokensType> {
     const existingUser = await this.userRepository.findUserByEmailAndUserName(
       candidate.email,
       candidate.userName,
@@ -33,16 +33,34 @@ export class UserService implements UserServiceInterface {
 
     if (existingUser) throw new UserExistException();
 
-    const hashedPassword = await this.password.toHash(candidate.password);
+    const hashedPassword = await this.cryptoService.passwordToHash(candidate.password);
 
-    const savedUser: SafeUserType = await this.userRepository.saveUser({
-      ...candidate,
-      password: hashedPassword,
-    });
+    const newUser = new User();
+    const newEmailActivationLink = new EmailActivationLink(newUser.userId);
 
-    await this.eventService.onUserCreateEventEmitter(savedUser);
+    const createdUser: SafeUserType =
+      await this.userRepository.createNewUserAndActivationLink(
+        {
+          ...newUser,
+          ...candidate,
+          password: hashedPassword,
+        },
+        newEmailActivationLink,
+      );
 
-    return savedUser;
+    if (createdUser) {
+      await this.eventService.onUserCreateEventEmitter({
+        email: createdUser.email,
+        userName: createdUser.userName,
+        emailActivationLink: newEmailActivationLink.emailActivationLink,
+      });
+    }
+
+    return {
+      ...createdUser,
+      accessToken: this.cryptoService.generateToken(createdUser),
+      refreshToken: this.cryptoService.generateToken(createdUser, 'refresh'),
+    };
   }
 
   async loginUser(candidate: LoginUserDto): Promise<SafeUserType> {
@@ -52,14 +70,14 @@ export class UserService implements UserServiceInterface {
 
     if (!userEntityByEmail) throw new UserNotExistException();
 
-    const isPasswordCorrect = await this.password.compare(
+    const isPasswordCorrect = await this.cryptoService.comparePasswords(
       userEntityByEmail.password,
       candidate.password,
     );
 
     if (!isPasswordCorrect) throw new WrongPasswordException();
 
-    return this.userMapper.mapUserEntityToSafeUser(userEntityByEmail);
+    return this.userRepository.getSafeUser(userEntityByEmail);
   }
 
   async findUsers(): Promise<SafeUserType[]> {
@@ -78,7 +96,10 @@ export class UserService implements UserServiceInterface {
 
     if (!foundedUser) throw new UserNotExistException();
 
-    const result = await this.userRepository.updateUserField(userId.toString(), userPicture);
+    const result = await this.userRepository.updateUserField(
+      userId.toString(),
+      userPicture,
+    );
 
     if (!result) throw new CantUpdateUserException();
 
@@ -93,7 +114,10 @@ export class UserService implements UserServiceInterface {
 
     if (!foundedUser) throw new UserNotExistException();
 
-    const result = this.userRepository.updateUserField(userId.toString(), userName);
+    const result = this.userRepository.updateUserField(
+      userId.toString(),
+      userName,
+    );
 
     if (!result) throw new CantUpdateUserException();
 
