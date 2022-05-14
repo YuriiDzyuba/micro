@@ -49,6 +49,6 @@ export class User implements UserType {
     this.createdAt = Date.now();
     this.updatedAt = null;
     this.verifiedEmail = false;
-    this.roles = [UserRoleEnum.user];
+    this.roles = [UserRoleEnum.USER];
   }
 }
