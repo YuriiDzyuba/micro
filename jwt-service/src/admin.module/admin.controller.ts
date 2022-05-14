@@ -21,10 +21,10 @@ import { UserType } from '../user.module/types/user.type';
 import { Roles } from "../decorators/roles.decorator";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import { UserRoleEnum } from "../types/userRole.enum";
-import {findUserById, findUsers, deleteUserById } from './consts/admin.swagger.consts';
-import {ManyUsersResponsePresentation} from "./presentations/manyUsersResponse.presentation";
-import {OneUserResponsePresentation} from "./presentations/oneUserResponse.presentation";
-import {RemovedUserResponsePresentation} from "./presentations/removedUserResponse.presentation";
+import { findUserById, findUsers, deleteUserById } from './consts/admin.swagger.consts';
+import { ManyUsersResponsePresentation } from "./presentations/manyUsersResponse.presentation";
+import { OneUserResponsePresentation } from "./presentations/oneUserResponse.presentation";
+import { RemovedUserResponsePresentation } from "./presentations/removedUserResponse.presentation";
 
 @ApiTags('admin routes')
 @ApiBearerAuth()
