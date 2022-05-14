@@ -6,4 +6,4 @@ export interface UserPresenterInterface {
 }
 
 export const UserApiPresenterInterfaceToken = Symbol('UserPresenterInterface');
-``
+``;

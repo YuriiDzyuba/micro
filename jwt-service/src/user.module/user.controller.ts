@@ -23,9 +23,19 @@ import {
 } from './types/userPresenter.interface';
 import { LoginUserDto } from './dto/loginUser.dto';
 import { UserType } from './types/user.type';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { createNewUser, logInUser, changeUserPicture, changeUserName } from './consts/user.swagger.consts';
-import { UserResponsePresentation } from "./presentations/userResponse.presentation";
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  createNewUser,
+  logInUser,
+  changeUserPicture,
+  changeUserName,
+} from './consts/user.swagger.consts';
+import { UserResponsePresentation } from './presentations/userResponse.presentation';
 
 @ApiTags('user routes')
 @Controller('user')

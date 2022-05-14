@@ -1,12 +1,10 @@
 import { UserType } from './user.type';
 import { SafeUserType } from './safeUser.type';
-import { CreateUserRequestType } from "./createUser.request.type";
-import { SafeUserWithTokensType } from "./safeUserWithTokens.type";
+import { CreateUserRequestType } from './createUser.request.type';
+import { SafeUserWithTokensType } from './safeUserWithTokens.type';
 
 export interface UserServiceInterface {
-  createUser(
-    candidate: CreateUserRequestType,
-  ): Promise<SafeUserWithTokensType>;
+  createUser(candidate: CreateUserRequestType): Promise<SafeUserWithTokensType>;
   loginUser(
     candidate: Pick<UserType, 'email' | 'password'>,
   ): Promise<SafeUserType>;

@@ -1,5 +1,5 @@
-import { SafeUserWithTokensType } from "./safeUserWithTokens.type";
+import { SafeUserWithTokensType } from './safeUserWithTokens.type';
 
 export type UserResponseType = {
-  user: SafeUserWithTokensType
-}
+  user: SafeUserWithTokensType;
+};

@@ -1,4 +1,4 @@
-import { UserResponsePresentation } from "../presentations/userResponse.presentation";
+import { UserResponsePresentation } from '../presentations/userResponse.presentation';
 
 export const createNewUser = {
   apiOperation: {

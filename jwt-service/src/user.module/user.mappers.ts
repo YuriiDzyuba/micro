@@ -1,5 +1,5 @@
 import { SafeUserType } from './types/safeUser.type';
-import {UserType} from "./types/user.type";
+import { UserType } from './types/user.type';
 
 export class UserMappers {
   mapUserEntityToSafeUser(user: UserType): SafeUserType {

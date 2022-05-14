@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { UserPresenterInterface } from './types/userPresenter.interface';
-import { UserResponsePresentation } from "./presentations/userResponse.presentation";
-import {SafeUserWithTokensType} from "./types/safeUserWithTokens.type";
+import { UserResponsePresentation } from './presentations/userResponse.presentation';
+import { SafeUserWithTokensType } from './types/safeUserWithTokens.type';
 
 @Injectable()
 export class UserPresenter implements UserPresenterInterface {
-
   mapUserResponse(user: SafeUserWithTokensType): UserResponsePresentation {
     return {
       user: {
@@ -18,7 +17,7 @@ export class UserPresenter implements UserPresenterInterface {
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
         accessToken: user.accessToken,
-        refreshToken: user.refreshToken
+        refreshToken: user.refreshToken,
       },
     };
   }

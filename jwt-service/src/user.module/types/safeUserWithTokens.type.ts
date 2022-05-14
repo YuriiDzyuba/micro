@@ -1,3 +1,6 @@
-import { SafeUserType } from "./safeUser.type";
+import { SafeUserType } from './safeUser.type';
 
-export type SafeUserWithTokensType = SafeUserType & { accessToken: string; refreshToken: string } ;
+export type SafeUserWithTokensType = SafeUserType & {
+  accessToken: string;
+  refreshToken: string;
+};

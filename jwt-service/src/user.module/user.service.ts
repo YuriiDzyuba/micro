@@ -1,21 +1,21 @@
-import {Injectable} from '@nestjs/common';
-import {CreateUserDto} from './dto/createUser.dto';
-import {UserRepository} from './user.repository';
+import { Injectable } from '@nestjs/common';
+import { CreateUserDto } from './dto/createUser.dto';
+import { UserRepository } from './user.repository';
 import {
   CantUpdateUserException,
   UserExistException,
   UserNotExistException,
   WrongPasswordException,
 } from './exceptions/userNotExist.exception';
-import {CryptoService} from './crypto.service';
-import {UserServiceInterface} from './types/userService.interface';
-import {SafeUserType} from './types/safeUser.type';
-import {EventsService} from '../events.module/events.service';
-import {LoginUserDto} from './dto/loginUser.dto';
-import {User} from './entity/user.entity';
-import {UserType} from './types/user.type';
-import {EmailActivationLink} from './entity/emailActivationLink.entity';
-import {SafeUserWithTokensType} from "./types/safeUserWithTokens.type";
+import { CryptoService } from './crypto.service';
+import { UserServiceInterface } from './types/userService.interface';
+import { SafeUserType } from './types/safeUser.type';
+import { EventsService } from '../events.module/events.service';
+import { LoginUserDto } from './dto/loginUser.dto';
+import { User } from './entity/user.entity';
+import { UserType } from './types/user.type';
+import { EmailActivationLink } from './entity/emailActivationLink.entity';
+import { SafeUserWithTokensType } from './types/safeUserWithTokens.type';
 
 @Injectable()
 export class UserService implements UserServiceInterface {
@@ -25,6 +25,14 @@ export class UserService implements UserServiceInterface {
     private readonly eventService: EventsService,
   ) {}
 
+  private addTokensToSafeUser(safeUser: SafeUserType): SafeUserWithTokensType {
+    return {
+      ...safeUser,
+      accessToken: this.cryptoService.generateToken(safeUser),
+      refreshToken: this.cryptoService.generateToken(safeUser, 'refresh'),
+    };
+  }
+
   async createUser(candidate: CreateUserDto): Promise<SafeUserWithTokensType> {
     const existingUser = await this.userRepository.findUserByEmailAndUserName(
       candidate.email,
@@ -33,7 +41,9 @@ export class UserService implements UserServiceInterface {
 
     if (existingUser) throw new UserExistException();
 
-    const hashedPassword = await this.cryptoService.passwordToHash(candidate.password);
+    const hashedPassword = await this.cryptoService.passwordToHash(
+      candidate.password,
+    );
 
     const newUser = new User();
     const newEmailActivationLink = new EmailActivationLink(newUser.userId);
@@ -56,28 +66,26 @@ export class UserService implements UserServiceInterface {
       });
     }
 
-    return {
-      ...createdUser,
-      accessToken: this.cryptoService.generateToken(createdUser),
-      refreshToken: this.cryptoService.generateToken(createdUser, 'refresh'),
-    };
+    return this.addTokensToSafeUser(createdUser);
   }
 
   async loginUser(candidate: LoginUserDto): Promise<SafeUserType> {
-    const userEntityByEmail: User = await this.userRepository.findUserByEmail(
+    const foundedUserByEmail: User = await this.userRepository.findUserByEmail(
       candidate.email,
     );
 
-    if (!userEntityByEmail) throw new UserNotExistException();
+    if (!foundedUserByEmail) throw new UserNotExistException();
 
     const isPasswordCorrect = await this.cryptoService.comparePasswords(
-      userEntityByEmail.password,
+      foundedUserByEmail.password,
       candidate.password,
     );
 
     if (!isPasswordCorrect) throw new WrongPasswordException();
 
-    return this.userRepository.getSafeUser(userEntityByEmail);
+    const safeUser = this.userRepository.getSafeUser(foundedUserByEmail);
+
+    return this.addTokensToSafeUser(safeUser);
   }
 
   async findUsers(): Promise<SafeUserType[]> {

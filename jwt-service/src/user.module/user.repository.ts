@@ -9,7 +9,7 @@ import { ChangeUserNameDto } from './dto/changeUserName.dto';
 import { EmailActivationLink } from './entity/emailActivationLink.entity';
 import { CreateUserRequestType } from './types/createUser.request.type';
 import { EmailActivationLinkType } from './types/emailActivationLink.type';
-import {UserType} from "./types/user.type";
+import { UserType } from './types/user.type';
 
 @Injectable()
 export class UserRepository {
@@ -80,6 +80,6 @@ export class UserRepository {
   }
 
   getSafeUser(user: UserType): SafeUserType {
-    return this.userMapper.mapUserEntityToSafeUser(user)
+    return this.userMapper.mapUserEntityToSafeUser(user);
   }
 }
