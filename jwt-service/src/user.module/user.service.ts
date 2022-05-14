@@ -5,7 +5,8 @@ import {
   CantUpdateUserException,
   UserExistException,
   UserExceptions,
-  WrongPasswordException, NotImplementedFeatureException,
+  WrongPasswordException,
+  NotImplementedFeatureException,
 } from './user.exceptions';
 import { CryptoService } from './crypto.service';
 import { UserServiceInterface } from './types/userService.interface';
@@ -34,8 +35,6 @@ export class UserService implements UserServiceInterface {
   }
 
   getCurrentUser(safeUser: SafeUserType): SafeUserWithTokensType {
-    if (!safeUser) throw new NotImplementedFeatureException();
-
     return this.addTokensToSafeUser(safeUser);
   }
 

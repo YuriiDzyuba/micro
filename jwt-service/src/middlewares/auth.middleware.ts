@@ -13,7 +13,7 @@ import {
   UserServiceInterface,
 } from '../user.module/types/userService.interface';
 import { TokenTypes } from '../types/tokenTypes.enum';
-import {SafeUserType} from "../user.module/types/safeUser.type";
+import { SafeUserType } from '../user.module/types/safeUser.type';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
@@ -47,7 +47,9 @@ export class AuthMiddleware implements NestMiddleware {
           ? process.env.ACCESS_JWT_SECRET
           : process.env.REFRESH_JWT_SECRET,
       );
-      const user: SafeUserType = await this.userApiService.findUserById(decodedUserData.id);
+      const user: SafeUserType = await this.userApiService.findUserById(
+        decodedUserData.id,
+      );
 
       if (!user) {
         throw new Error();

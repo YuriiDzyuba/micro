@@ -7,7 +7,9 @@ import {
   UsePipes,
   ValidationPipe,
   Inject,
-  ParseUUIDPipe, Get,
+  ParseUUIDPipe,
+  Get,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/createUser.dto';
 import { ChangeUserPictureDto } from './dto/changeUserPicture.dto';
@@ -30,14 +32,16 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import {
+  getCurrentUser,
   createNewUser,
   logInUser,
   changeUserPicture,
   changeUserName,
 } from './consts/user.swagger.consts';
 import { UserResponsePresentation } from './presentations/userResponse.presentation';
-import {User} from "../decorators/user.decorator";
-import {SafeUserType} from "./types/safeUser.type";
+import { User } from '../decorators/user.decorator';
+import { SafeUserType } from './types/safeUser.type';
+import { AuthGuard } from '../guards/auth.guard';
 
 @ApiTags('user routes')
 @Controller('user')
@@ -50,14 +54,17 @@ export class UserController implements UserControllerInterface {
     private userPresenter: UserPresenterInterface,
   ) {}
 
-  @ApiOperation(createNewUser.apiOperation)
-  @ApiResponse(createNewUser.apiResponse)
+  @ApiOperation(getCurrentUser.apiOperation)
+  @ApiResponse(getCurrentUser.apiResponse)
   @ApiBearerAuth()
   @Get()
+  @UseGuards(AuthGuard)
   async getCurrentUser(
     @User() currentUser: SafeUserType,
   ): Promise<UserResponsePresentation> {
-    const userWithTokens = await this.userApiService.getCurrentUser(currentUser);
+    const userWithTokens = await this.userApiService.getCurrentUser(
+      currentUser,
+    );
     return this.userPresenter.mapUserResponse(userWithTokens);
   }
 
@@ -86,6 +93,7 @@ export class UserController implements UserControllerInterface {
   @ApiResponse(changeUserPicture.apiResponse)
   @ApiBearerAuth()
   @Patch('picture/:userId')
+  @UseGuards(AuthGuard)
   async changeUserPicture(
     @Param('userId', new ParseUUIDPipe()) userId: Pick<UserType, 'userId'>,
     @Body() changeUserPictureDto: ChangeUserPictureDto,
@@ -101,6 +109,7 @@ export class UserController implements UserControllerInterface {
   @ApiResponse(changeUserName.apiResponse)
   @ApiBearerAuth()
   @Patch('name/:userId')
+  @UseGuards(AuthGuard)
   async changeUserName(
     @Param('userId', new ParseUUIDPipe()) userId: Pick<UserType, 'userId'>,
     @Body() changeUserNameDto: ChangeUserNameDto,

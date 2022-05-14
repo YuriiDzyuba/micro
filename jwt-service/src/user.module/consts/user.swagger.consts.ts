@@ -1,5 +1,16 @@
 import { UserResponsePresentation } from '../presentations/userResponse.presentation';
 
+export const getCurrentUser = {
+  apiOperation: {
+    summary: 'return current user wit access and refresh tokens',
+  },
+  apiResponse: {
+    status: 200,
+    description: 'current user',
+    type: UserResponsePresentation,
+  },
+};
+
 export const createNewUser = {
   apiOperation: {
     summary: 'create new user by email, user name and password',
