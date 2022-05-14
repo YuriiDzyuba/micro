@@ -11,21 +11,32 @@ import { LoginRequestInterface } from "../types/loginRequest.interface";
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  getUserFromResponse(response: AuthResponseInterface): CurrentUserInterface {
+  private getUserFromResponse(response: AuthResponseInterface): CurrentUserInterface {
     return response.user
   }
 
+  private getUrl(url): string {
+    return environment.jwtApiUrl + url
+  }
+
   register(data: RegisterRequestInterface): Observable<CurrentUserInterface> {
-    const url = environment.jwtApiUrl + '/user'
+    const url = this.getUrl('/user')
     return this.http
       .post<AuthResponseInterface>(url, data)
       .pipe(map(this.getUserFromResponse))
   }
 
   login(data: LoginRequestInterface): Observable<CurrentUserInterface> {
-    const url = environment.jwtApiUrl + '/user/login'
+    const url = this.getUrl('/user/login')
     return this.http
       .post<AuthResponseInterface>(url, data)
+      .pipe(map(this.getUserFromResponse))
+  }
+
+  getCurrentUser(): Observable<CurrentUserInterface> {
+    const url = environment.jwtApiUrl + '/user'
+    return this.http
+      .get<AuthResponseInterface>(url)
       .pipe(map(this.getUserFromResponse))
   }
 }

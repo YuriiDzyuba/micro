@@ -3,6 +3,7 @@ import {ValidationErrorsInterface} from "../../shared/types/validationErrors.int
 
 export interface AuthStateInterface {
   isSubmitting: boolean
+  isLoading: boolean
   currentUser: CurrentUserInterface | null
   isLoggedIn: boolean | null
   validationErrors: ValidationErrorsInterface | null
