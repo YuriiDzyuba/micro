@@ -80,7 +80,6 @@ export class UserController implements UserControllerInterface {
 
   @ApiOperation(logInUser.apiOperation)
   @ApiResponse(logInUser.apiResponse)
-  @ApiBearerAuth()
   @Post('login')
   async logInUser(
     @Body() logUserDto: LoginUserDto,
