@@ -7,7 +7,7 @@ import {
   UsePipes,
   ValidationPipe,
   Inject,
-  ParseUUIDPipe,
+  ParseUUIDPipe, Get,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/createUser.dto';
 import { ChangeUserPictureDto } from './dto/changeUserPicture.dto';
@@ -36,6 +36,8 @@ import {
   changeUserName,
 } from './consts/user.swagger.consts';
 import { UserResponsePresentation } from './presentations/userResponse.presentation';
+import {User} from "../decorators/user.decorator";
+import {SafeUserType} from "./types/safeUser.type";
 
 @ApiTags('user routes')
 @Controller('user')
@@ -47,6 +49,17 @@ export class UserController implements UserControllerInterface {
     @Inject(UserApiPresenterInterfaceToken)
     private userPresenter: UserPresenterInterface,
   ) {}
+
+  @ApiOperation(createNewUser.apiOperation)
+  @ApiResponse(createNewUser.apiResponse)
+  @ApiBearerAuth()
+  @Get()
+  async getCurrentUser(
+    @User() currentUser: SafeUserType,
+  ): Promise<UserResponsePresentation> {
+    const userWithTokens = await this.userApiService.getCurrentUser(currentUser);
+    return this.userPresenter.mapUserResponse(userWithTokens);
+  }
 
   @ApiOperation(createNewUser.apiOperation)
   @ApiResponse(createNewUser.apiResponse)

@@ -4,9 +4,9 @@ import { UserRepository } from './user.repository';
 import {
   CantUpdateUserException,
   UserExistException,
-  UserNotExistException,
-  WrongPasswordException,
-} from './exceptions/userNotExist.exception';
+  UserExceptions,
+  WrongPasswordException, NotImplementedFeatureException,
+} from './user.exceptions';
 import { CryptoService } from './crypto.service';
 import { UserServiceInterface } from './types/userService.interface';
 import { SafeUserType } from './types/safeUser.type';
@@ -31,6 +31,12 @@ export class UserService implements UserServiceInterface {
       accessToken: this.cryptoService.generateToken(safeUser),
       refreshToken: this.cryptoService.generateToken(safeUser, 'refresh'),
     };
+  }
+
+  getCurrentUser(safeUser: SafeUserType): SafeUserWithTokensType {
+    if (!safeUser) throw new NotImplementedFeatureException();
+
+    return this.addTokensToSafeUser(safeUser);
   }
 
   async createUser(candidate: CreateUserDto): Promise<SafeUserWithTokensType> {
@@ -74,7 +80,7 @@ export class UserService implements UserServiceInterface {
       candidate.email,
     );
 
-    if (!foundedUserByEmail) throw new UserNotExistException();
+    if (!foundedUserByEmail) throw new UserExceptions();
 
     const isPasswordCorrect = await this.cryptoService.comparePasswords(
       foundedUserByEmail.password,
@@ -102,7 +108,7 @@ export class UserService implements UserServiceInterface {
   ): Promise<SafeUserType> {
     const foundedUser = await this.findUserById(userId);
 
-    if (!foundedUser) throw new UserNotExistException();
+    if (!foundedUser) throw new UserExceptions();
 
     const result = await this.userRepository.updateUserField(
       userId.toString(),
@@ -120,7 +126,7 @@ export class UserService implements UserServiceInterface {
   ): Promise<SafeUserType> {
     const foundedUser = await this.findUserById(userId);
 
-    if (!foundedUser) throw new UserNotExistException();
+    if (!foundedUser) throw new UserExceptions();
 
     const result = this.userRepository.updateUserField(
       userId.toString(),

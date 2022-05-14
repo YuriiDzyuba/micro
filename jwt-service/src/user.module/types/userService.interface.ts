@@ -4,6 +4,7 @@ import { CreateUserRequestType } from './createUser.request.type';
 import { SafeUserWithTokensType } from './safeUserWithTokens.type';
 
 export interface UserServiceInterface {
+  getCurrentUser(safeUser: SafeUserType): SafeUserWithTokensType;
   createUser(candidate: CreateUserRequestType): Promise<SafeUserWithTokensType>;
   loginUser(
     candidate: Pick<UserType, 'email' | 'password'>,

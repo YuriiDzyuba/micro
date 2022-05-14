@@ -3,7 +3,7 @@ import {
   UserServiceInterface,
   UserApiServiceInterfaceToken,
 } from '../user.module/types/userService.interface';
-import { UserNotExistException } from '../user.module/exceptions/userNotExist.exception';
+import { UserExceptions } from '../user.module/user.exceptions';
 import { AdminServiceInterface } from './types/adminService.interface';
 import { SafeUserType } from '../user.module/types/safeUser.type';
 import { UserType } from '../user.module/types/user.type';
@@ -26,7 +26,7 @@ export class AdminService implements AdminServiceInterface {
   async removeUser(userId: Pick<UserType, 'userId'>) {
     const foundedUser = await this.userApiService.findUserById(userId);
 
-    if (!foundedUser) throw new UserNotExistException();
+    if (!foundedUser) throw new UserExceptions();
 
     await this.userApiService.removeUser(userId);
   }
