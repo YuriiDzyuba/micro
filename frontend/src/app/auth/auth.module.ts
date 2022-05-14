@@ -25,7 +25,7 @@ import { GetCurrentUserEffect } from "./effects/getCurrentUser.effect";
     EffectsModule.forFeature([RegisterEffect, LoginEffect, GetCurrentUserEffect])
   ],
   declarations:[RegisterComponent, LoginComponent],
-  providers:[AuthService, PersistenceService]
+  providers:[AuthService, PersistenceService],
 })
 
 export class AuthModule {}
