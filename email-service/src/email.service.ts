@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from "@nestjs-modules/mailer";
-import { SafeUserType } from "./contracts/safeUser.type";
-import { onNewUserLetterCreator } from "./emailLettersFactory/onNewUserLetterCreator";
+import { OnUserCreateValuesType } from "./types/onUserCreateValues.type";
+import { onUserCreateTemplate } from "./templates/onUserCreate.template";
 
 @Injectable()
 export class EmailService {
@@ -9,13 +9,14 @@ export class EmailService {
       private email: MailerService,
   ) {}
 
-  async onUserCreated(createdUser: SafeUserType): Promise<any> {
-    const email = new onNewUserLetterCreator(createdUser)
-    await this.email.sendMail({...email})
+  async onUserCreated(values: OnUserCreateValuesType): Promise<any> {
+    console.log(values)
+    const email = new onUserCreateTemplate(values)
+    await this.email.sendMail(email.getLetter())
   }
 
   async onUserRemoved(user): Promise<any> {
-    const email = new onNewUserLetterCreator(user)
+    const email = new onUserCreateTemplate(user)
     await this.email.sendMail({...email})
   }
 }
