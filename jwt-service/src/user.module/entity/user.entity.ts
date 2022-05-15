@@ -19,7 +19,7 @@ export class User implements UserType {
   @PrimaryColumn({ unique: true })
   public userId: string;
 
-  @Column({ unique: true })
+  @Column()
   public userName: string;
 
   @Exclude()

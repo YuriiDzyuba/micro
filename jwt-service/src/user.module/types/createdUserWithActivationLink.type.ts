@@ -1,8 +1,8 @@
-import { CreateUserRequestType } from './createUser.request.type';
 import { EmailActivationLinkType } from './emailActivationLink.type';
+import { UserType } from './user.type';
 
 export type CreatedUserWithActivationLinkType = Pick<
-  CreateUserRequestType,
+  UserType,
   'email' | 'userName'
 > &
   Pick<EmailActivationLinkType, 'emailActivationLink'>;

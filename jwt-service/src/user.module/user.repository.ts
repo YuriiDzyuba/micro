@@ -7,7 +7,6 @@ import { UserMappers } from './user.mappers';
 import { ChangeUserPictureDto } from './dto/changeUserPicture.dto';
 import { ChangeUserNameDto } from './dto/changeUserName.dto';
 import { EmailActivationLink } from './entity/emailActivationLink.entity';
-import { CreateUserRequestType } from './types/createUser.request.type';
 import { EmailActivationLinkType } from './types/emailActivationLink.type';
 import { UserType } from './types/user.type';
 
@@ -21,15 +20,8 @@ export class UserRepository {
     readonly userMapper: UserMappers,
   ) {}
 
-  async findUserByEmailAndUserName(
-    email: string,
-    userName: string,
-  ): Promise<SafeUserType> {
-    const foundedUser = await this.userModel.findOne({
-      where: {
-        $or: [{ email }, { userName }],
-      },
-    });
+  async getSafeUserByEmail(email: string): Promise<SafeUserType> {
+    const foundedUser = await this.userModel.findOne({ email });
 
     return foundedUser
       ? this.userMapper.mapUserEntityToSafeUser(foundedUser)
@@ -41,7 +33,7 @@ export class UserRepository {
   }
 
   async createNewUserAndActivationLink(
-    userToSave: CreateUserRequestType,
+    userToSave: Pick<UserType, 'email' | 'password' | 'userName'>,
     newEmailActivationLink: EmailActivationLinkType,
   ): Promise<SafeUserType> {
     const result: User = await this.userModel.save(userToSave);

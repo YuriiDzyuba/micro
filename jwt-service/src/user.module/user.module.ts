@@ -33,9 +33,14 @@ import { EmailActivationLink } from './entity/emailActivationLink.entity';
   ],
   exports: [
     {
+      provide: UserApiPresenterInterfaceToken,
+      useClass: UserPresenter,
+    },
+    {
       provide: UserApiServiceInterfaceToken,
       useClass: UserService,
     },
+    CryptoService,
   ],
 })
 export class UserModule {}

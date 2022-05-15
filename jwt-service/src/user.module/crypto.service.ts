@@ -29,8 +29,12 @@ export class CryptoService {
     return buf.toString('hex') === hashedPassword;
   }
 
-  createLink(adress: string) {
-    return `${hostDomain}/${hostDomainGlobalPrefix}/${adress}/${uuidv4()}`;
+  createLink(address: string) {
+    return `${hostDomain}/${hostDomainGlobalPrefix}/${address}/${uuidv4()}`;
+  }
+
+  createRandomString() {
+    return ((Math.random() * Math.pow(36, 6)) | 0).toString(36);
   }
 
   generateToken(user: SafeUserType, tokenType = 'access'): string {

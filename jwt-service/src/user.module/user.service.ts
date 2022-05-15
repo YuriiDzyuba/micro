@@ -6,7 +6,6 @@ import {
   UserExistException,
   UserExceptions,
   WrongPasswordException,
-  NotImplementedFeatureException,
 } from './user.exceptions';
 import { CryptoService } from './crypto.service';
 import { UserServiceInterface } from './types/userService.interface';
@@ -17,6 +16,8 @@ import { User } from './entity/user.entity';
 import { UserType } from './types/user.type';
 import { EmailActivationLink } from './entity/emailActivationLink.entity';
 import { SafeUserWithTokensType } from './types/safeUserWithTokens.type';
+import { CreateUserType } from './types/createUser.type.ts';
+import { OAuthUserType } from '../oAuth.module/types/oAuthUser.type';
 
 @Injectable()
 export class UserService implements UserServiceInterface {
@@ -34,26 +35,18 @@ export class UserService implements UserServiceInterface {
     };
   }
 
-  getCurrentUser(safeUser: SafeUserType): SafeUserWithTokensType {
-    return this.addTokensToSafeUser(safeUser);
-  }
-
-  async createUser(candidate: CreateUserDto): Promise<SafeUserWithTokensType> {
-    const existingUser = await this.userRepository.findUserByEmailAndUserName(
-      candidate.email,
-      candidate.userName,
-    );
-
-    if (existingUser) throw new UserExistException();
-
-    const hashedPassword = await this.cryptoService.passwordToHash(
-      candidate.password,
-    );
+  private async addUserWithActivationLinkToDbAndEmitEvent(
+    candidate: CreateUserType & Pick<UserType, 'email' | 'userName'>,
+  ): Promise<SafeUserType> {
+    const password = candidate.password
+      ? candidate.password
+      : this.cryptoService.createRandomString();
+    const hashedPassword = await this.cryptoService.passwordToHash(password);
 
     const newUser = new User();
     const newEmailActivationLink = new EmailActivationLink(newUser.userId);
 
-    const createdUser: SafeUserType =
+    const createdUser =
       await this.userRepository.createNewUserAndActivationLink(
         {
           ...newUser,
@@ -70,6 +63,42 @@ export class UserService implements UserServiceInterface {
         emailActivationLink: newEmailActivationLink.emailActivationLink,
       });
     }
+
+    return createdUser;
+  }
+
+  getCurrentUser(safeUser: SafeUserType): SafeUserWithTokensType {
+    return this.addTokensToSafeUser(safeUser);
+  }
+
+  async getSafeUserByEmail(email: string): Promise<SafeUserType> {
+    return await this.userRepository.getSafeUserByEmail(email);
+  }
+
+  async createOAuthUser(
+    candidate: OAuthUserType,
+  ): Promise<SafeUserWithTokensType> {
+    const password = this.cryptoService.createRandomString();
+
+    const createdUser = await this.addUserWithActivationLinkToDbAndEmitEvent({
+      ...candidate,
+      password,
+    });
+
+    return this.addTokensToSafeUser(createdUser);
+  }
+
+  async createUser(candidate: CreateUserType): Promise<SafeUserWithTokensType> {
+    const existingUser = await this.getSafeUserByEmail(
+      // @ts-ignore
+      candidate.email,
+    );
+
+    if (existingUser) throw new UserExistException();
+
+    const createdUser = await this.addUserWithActivationLinkToDbAndEmitEvent(
+      candidate,
+    );
 
     return this.addTokensToSafeUser(createdUser);
   }
