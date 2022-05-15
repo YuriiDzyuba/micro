@@ -1,14 +1,16 @@
 import { UserType } from './user.type';
 import { SafeUserType } from './safeUser.type';
-import { CreateUserRequestType } from './createUser.request.type';
 import { SafeUserWithTokensType } from './safeUserWithTokens.type';
+import { CreateUserType } from './createUser.type.ts';
+import { LoginUserType } from './loginUser.type';
+import { OAuthUserType } from '../../oAuth.module/types/oAuthUser.type';
 
 export interface UserServiceInterface {
+  getSafeUserByEmail(email: string): Promise<SafeUserType>;
+  createOAuthUser(candidate: OAuthUserType): Promise<SafeUserWithTokensType>;
   getCurrentUser(safeUser: SafeUserType): SafeUserWithTokensType;
-  createUser(candidate: CreateUserRequestType): Promise<SafeUserWithTokensType>;
-  loginUser(
-    candidate: Pick<UserType, 'email' | 'password'>,
-  ): Promise<SafeUserType>;
+  createUser(candidate: CreateUserType): Promise<SafeUserWithTokensType>;
+  loginUser(candidate: LoginUserType): Promise<SafeUserType>;
   findUsers(): Promise<SafeUserType[]>;
   findUserById(userId: Pick<UserType, 'userId'>): Promise<SafeUserType>;
   changeUserPicture(
