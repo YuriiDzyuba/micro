@@ -6,7 +6,9 @@ import {
   UsePipes,
   ValidationPipe,
   Inject,
-  ParseUUIDPipe, HttpCode,
+  ParseUUIDPipe,
+  HttpCode,
+  UseGuards,
 } from '@nestjs/common';
 import { AdminControllerInterface } from './types/adminController.interface';
 import {
@@ -18,17 +20,28 @@ import {
   AdminApiPresenterInterfaceToken,
 } from './types/adminPresenter.interface';
 import { UserType } from '../user.module/types/user.type';
-import { Roles } from "../decorators/roles.decorator";
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import { UserRoleEnum } from "../types/userRole.enum";
-import { findUserById, findUsers, deleteUserById } from './consts/admin.swagger.consts';
-import { ManyUsersResponsePresentation } from "./presentations/manyUsersResponse.presentation";
-import { OneUserResponsePresentation } from "./presentations/oneUserResponse.presentation";
-import { RemovedUserResponsePresentation } from "./presentations/removedUserResponse.presentation";
+import { Roles } from '../decorators/roles.decorator';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { UserRoleEnum } from '../types/userRole.enum';
+import {
+  findUserById,
+  findUsers,
+  deleteUserById,
+} from './consts/admin.swagger.consts';
+import { ManyUsersResponsePresentation } from './presentations/manyUsersResponse.presentation';
+import { OneUserResponsePresentation } from './presentations/oneUserResponse.presentation';
+import { RemovedUserResponsePresentation } from './presentations/removedUserResponse.presentation';
+import { RolesGuard } from '../guards/roles.guard';
 
 @ApiTags('admin routes')
 @ApiBearerAuth()
 @Roles(UserRoleEnum.ADMIN)
+@UseGuards(RolesGuard)
 @Controller('admin')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
 export class AdminController implements AdminControllerInterface {

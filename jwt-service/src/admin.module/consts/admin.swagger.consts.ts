@@ -1,6 +1,6 @@
-import { UserResponsePresentation } from "../../user.module/presentations/userResponse.presentation";
-import { ManyUsersResponsePresentation } from "../presentations/manyUsersResponse.presentation";
-import { RemovedUserResponsePresentation } from "../presentations/removedUserResponse.presentation";
+import { UserResponsePresentation } from '../../user.module/presentations/userResponse.presentation';
+import { ManyUsersResponsePresentation } from '../presentations/manyUsersResponse.presentation';
+import { RemovedUserResponsePresentation } from '../presentations/removedUserResponse.presentation';
 
 export const findUsers = {
   apiOperation: {
@@ -31,7 +31,6 @@ export const deleteUserById = {
   apiResponse: {
     status: 202,
     description: 'return userId of deleted user',
-    schema: RemovedUserResponsePresentation
+    schema: RemovedUserResponsePresentation,
   },
 };
-

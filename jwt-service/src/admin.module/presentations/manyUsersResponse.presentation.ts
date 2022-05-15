@@ -1,8 +1,10 @@
-import {ApiProperty} from "@nestjs/swagger";
-import {ManyUsersResponseInterface} from "../types/manyUsersResponse.interface";
-import {SafeUserType} from "../../user.module/types/safeUser.type";
+import { ApiProperty } from '@nestjs/swagger';
+import { ManyUsersResponseInterface } from '../types/manyUsersResponse.interface';
+import { SafeUserType } from '../../user.module/types/safeUser.type';
 
-export class ManyUsersResponsePresentation implements ManyUsersResponseInterface {
+export class ManyUsersResponsePresentation
+  implements ManyUsersResponseInterface
+{
   @ApiProperty({
     example: [
       {
