@@ -7,14 +7,15 @@ import {
 import { UserModule } from './user.module/user.module';
 import { mongoDbUrl } from './config/config';
 import { AdminModule } from './admin.module/admin.module';
-import {APP_GUARD, APP_PIPE} from '@nestjs/core';
+import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.module/entity/user.entity';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EventsModule } from './events.module/events.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { EmailActivationLink } from './user.module/entity/emailActivationLink.entity';
-import {RolesGuard} from "./guards/roles.guard";
+import { RolesGuard } from './guards/roles.guard';
+import { OAuthModule } from './oAuth.module/oAuth.module';
 
 @Module({
   imports: [
@@ -30,12 +31,9 @@ import {RolesGuard} from "./guards/roles.guard";
       logging: true,
     }),
     AdminModule,
+    OAuthModule,
   ],
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
     {
       provide: APP_PIPE,
       useValue: new ValidationPipe({ transform: true }),

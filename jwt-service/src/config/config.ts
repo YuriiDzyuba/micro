@@ -7,5 +7,11 @@ export const accessJwtSecret = process.env.ACCESS_JWT_SECRET || 'accSecret';
 export const refreshJwtExpIn = process.env.REFRESH_TOKEN_EXP_IN || '5h';
 export const accessJwtExpIn = process.env.ACCESS_TOKEN_EXP_IN || '3h';
 
-export const hostDomain = process.env.DOMAIN || 'http://localhost:3000';
+export const hostDomain = process.env.DOMAIN || 'http://localhost:3000/';
 export const hostDomainGlobalPrefix = process.env.GLOBAL_PREFIX || 'jwt-api';
+
+export const googleClientId =
+  process.env.GOOGLE_CLIENT_ID ||
+  '171883628540-nndmtavj68f93jj40btiob7begicinm5.apps.googleusercontent.com';
+export const googleClientSecret =
+  process.env.GOOGLE_CLIENT_SECRET || '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';
