@@ -10,13 +10,10 @@ import { UserApiPresenterInterfaceToken } from './types/userPresenter.interface'
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventsModule } from '../events.module/events.module';
 import { UserMappers } from './user.mappers';
-import { EmailActivationLink } from './entity/emailActivationLink.entity';
+import { EmailVerification } from './entity/emailVerification.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([User, EmailActivationLink]),
-    EventsModule,
-  ],
+  imports: [TypeOrmModule.forFeature([User, EmailVerification]), EventsModule],
   controllers: [UserController],
   providers: [
     {

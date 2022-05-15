@@ -5,19 +5,17 @@ import {
   ObjectIdColumn,
   PrimaryColumn,
 } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
 import { Exclude } from 'class-transformer';
-import { EmailActivationLinkType } from '../types/emailActivationLink.type';
-import { hostDomain } from '../../config/config';
+import { EmailVerificationLinkType } from '../types/emailVerificationLink.type';
 
 @Entity()
-export class EmailActivationLink implements EmailActivationLinkType {
+export class EmailVerification implements EmailVerificationLinkType {
   @Exclude()
   @ObjectIdColumn()
   private _id: ObjectID;
 
   @PrimaryColumn({ unique: true })
-  emailActivationLink: string;
+  verificationLink: string;
 
   @Column({ unique: true })
   userId: string;
@@ -25,8 +23,8 @@ export class EmailActivationLink implements EmailActivationLinkType {
   @Column()
   createdAt: number;
 
-  constructor(userId) {
-    this.emailActivationLink = `${hostDomain}/activate/${uuidv4()}`;
+  constructor(userId, emailActivationLink) {
+    this.verificationLink = emailActivationLink;
     this.userId = userId;
     this.createdAt = Date.now();
   }

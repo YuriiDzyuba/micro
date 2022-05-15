@@ -10,6 +10,7 @@ import {
   ParseUUIDPipe,
   Get,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/createUser.dto';
 import { ChangeUserPictureDto } from './dto/changeUserPicture.dto';
@@ -118,5 +119,12 @@ export class UserController implements UserControllerInterface {
       changeUserNameDto,
     );
     return this.userPresenter.mapUserResponse(userWithChangedName);
+  }
+
+  @Get('verify_email/:activationLink')
+  async verifyEmail(
+    @Param('activationLink') activationLink: string,
+  ): Promise<void> {
+    await this.userApiService.verifyEmail(activationLink);
   }
 }

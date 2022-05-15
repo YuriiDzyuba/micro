@@ -6,17 +6,17 @@ import { MongoRepository, UpdateWriteOpResult } from 'typeorm';
 import { UserMappers } from './user.mappers';
 import { ChangeUserPictureDto } from './dto/changeUserPicture.dto';
 import { ChangeUserNameDto } from './dto/changeUserName.dto';
-import { EmailActivationLink } from './entity/emailActivationLink.entity';
-import { EmailActivationLinkType } from './types/emailActivationLink.type';
+import { EmailVerificationLinkType } from './types/emailVerificationLink.type';
 import { UserType } from './types/user.type';
+import { EmailVerification } from './entity/emailVerification.entity';
 
 @Injectable()
 export class UserRepository {
   constructor(
     @InjectRepository(User)
     readonly userModel: MongoRepository<User>,
-    @InjectRepository(EmailActivationLink)
-    readonly activateEmail: MongoRepository<EmailActivationLink>,
+    @InjectRepository(EmailVerification)
+    readonly verifyEmail: MongoRepository<EmailVerification>,
     readonly userMapper: UserMappers,
   ) {}
 
@@ -34,10 +34,10 @@ export class UserRepository {
 
   async createNewUserAndActivationLink(
     userToSave: Pick<UserType, 'email' | 'password' | 'userName'>,
-    newEmailActivationLink: EmailActivationLinkType,
+    newEmailActivationLink: EmailVerificationLinkType,
   ): Promise<SafeUserType> {
     const result: User = await this.userModel.save(userToSave);
-    await this.activateEmail.save(newEmailActivationLink);
+    await this.verifyEmail.save(newEmailActivationLink);
 
     return this.userMapper.mapUserEntityToSafeUser(result);
   }
@@ -49,6 +49,14 @@ export class UserRepository {
     const result: UpdateWriteOpResult = await this.userModel.updateOne(
       { userId },
       { $set: { ...fieldToUpdate } },
+    );
+    return !!result.matchedCount;
+  }
+
+  async updateEmailStatus(email: string): Promise<boolean> {
+    const result = await this.userModel.updateOne(
+      { email },
+      { $set: { verifiedEmail: true } },
     );
     return !!result.matchedCount;
   }
@@ -69,6 +77,11 @@ export class UserRepository {
 
   async removeUser(userId: string): Promise<void> {
     await this.userModel.deleteOne({ userId });
+  }
+
+  async removeEmailVerificationByUserId(userId: string): Promise<boolean> {
+    const result = await this.verifyEmail.deleteOne({ userId });
+    return !!result.deletedCount;
   }
 
   getSafeUser(user: UserType): SafeUserType {

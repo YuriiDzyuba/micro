@@ -7,14 +7,13 @@ import {
 import { UserModule } from './user.module/user.module';
 import { mongoDbUrl } from './config/config';
 import { AdminModule } from './admin.module/admin.module';
-import { APP_GUARD, APP_PIPE } from '@nestjs/core';
+import { APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.module/entity/user.entity';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EventsModule } from './events.module/events.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
-import { EmailActivationLink } from './user.module/entity/emailActivationLink.entity';
-import { RolesGuard } from './guards/roles.guard';
+import { EmailVerification } from './user.module/entity/emailVerification.entity';
 import { OAuthModule } from './oAuth.module/oAuth.module';
 
 @Module({
@@ -23,7 +22,7 @@ import { OAuthModule } from './oAuth.module/oAuth.module';
     EventsModule,
     EventEmitterModule.forRoot(),
     TypeOrmModule.forRoot({
-      entities: [User, EmailActivationLink],
+      entities: [User, EmailVerification],
       type: 'mongodb',
       url: mongoDbUrl,
       synchronize: true,
