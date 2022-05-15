@@ -16,8 +16,8 @@ import { User } from './entity/user.entity';
 import { UserType } from './types/user.type';
 import { EmailActivationLink } from './entity/emailActivationLink.entity';
 import { SafeUserWithTokensType } from './types/safeUserWithTokens.type';
-import { CreateUserType } from './types/createUser.type.ts';
 import { OAuthUserType } from '../oAuth.module/types/oAuthUser.type';
+import { CreateUserType } from "./types/createUser.type";
 
 @Injectable()
 export class UserService implements UserServiceInterface {
