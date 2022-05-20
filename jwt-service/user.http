@@ -1,0 +1,51 @@
+POST http://localhost.test.com/jwt-api/user
+Content-Type: application/json
+
+{
+  "userName": "pol14{{$randomInt}}",
+  "password": "{{$randomInt}}sdQd3gD",
+  "email": "pol@m{{$randomInt}}ail.de"
+}
+> {%
+client.global.set("token", response.body.user.accessToken);
+client.global.set("userId", response.body.user.userId);
+
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 201, "Response status is not 200");
+});
+%}
+###
+
+PATCH http://localhost.test.com/jwt-api/user/name/{{userId}}
+Content-Type: application/json
+authorization: accessToken {{token}}
+
+{
+  "userName": "Vasyl stsdsyggs"
+}
+###
+
+PATCH http://localhost.test.com/jwt-api/user/picture/a71f6ssac8e-28ca-4a95-9271-9aac05b9b29f
+Content-Type: application/json
+
+{
+  "picture": "http://red.ghggh.com"
+}
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+});
+%}
+###
+
+DELETE http://localhost.test.com/jwt-api/admin/delete_user/{{userId}}
+Content-Type: application/json
+authorization: accessToken {{token}}
+###
+
+###
+
+GET http://localhost.test.com/jwt-api/admin/find_user/0460e02d-2c78-49f6-b728-06c0879621f9
+Content-Type: application/json
+authorization: accessToken {{token}}
+###
