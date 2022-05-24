@@ -30,8 +30,8 @@ async function bootstrap() {
   );
 
   await app.listen(PORT, () => {
-    console.log(`${ NAME } has been started on port ${PORT}`);
-    console.log(`open swagger ${HOST}:${PORT}/${swaggerUrl}`);
+    console.log(`${NAME} has been started on port ${PORT}`);
+    console.log(`open swagger ${HOST}${PORT}/${swaggerUrl}`);
   });
 }
 bootstrap();

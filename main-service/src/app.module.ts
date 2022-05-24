@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import {User} from "../../jwt-service/src/user.module/entity/user.entity";
-import {EmailVerification} from "../../jwt-service/src/user.module/entity/emailVerification.entity";
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
@@ -13,7 +11,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
-        type: config.get<'postgres'>('TYPEORM_CONNECTION'),
+        type: config.get<'aurora-data-api'>('TYPEORM_CONNECTION'),
         username: config.get<string>('TYPEORM_USERNAME'),
         password: config.get<string>('TYPEORM_PASSWORD'),
         database: config.get<string>('TYPEORM_DATABASE'),
