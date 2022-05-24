@@ -48,10 +48,10 @@ export class AuthMiddleware implements NestMiddleware {
           : process.env.REFRESH_JWT_SECRET,
       );
 
-      if (!decodedUserData.id) throw new Error();
+      if (!decodedUserData.userId) throw new Error();
 
       const user: SafeUserType = await this.userApiService.findUserById(
-        decodedUserData.id!,
+        decodedUserData.userId!,
       );
 
       if (!user) throw new Error();

@@ -54,7 +54,7 @@ export class CryptoService {
   generateToken(user: SafeUserType, tokenType = 'access'): string {
     return sign(
       {
-        id: user.userId,
+        userId: user.userId,
         username: user.userName,
         email: user.email,
       },
