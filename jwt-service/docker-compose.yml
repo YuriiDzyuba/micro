@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  jwt-service:
+    build: .
+    command: npm run start:dev
+    restart: unless-stopped
+    volumes:
+      - ./src:/app/src
+    environment:
+      - SERVICE_PORT=${SERVICE_PORT}
+      - SERVICE_HOST=${SERVICE_HOST}
+      - TYPEORM_CONNECTION=${TYPEORM_CONNECTION}
+      - TYPEORM_USERNAME=${TYPEORM_USERNAME}
+      - TYPEORM_PASSWORD=${TYPEORM_PASSWORD}
+      - TYPEORM_DATABASE=${TYPEORM_DATABASE}
+      - TYPEORM_HOST=mongo
+      - TYPEORM_PORT=${TYPEORM_PORT}
+    networks:
+      - jwt-network
+      - app-network
+    ports:
+      - ${SERVICE_PORT}:${SERVICE_PORT}
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:5.0
+    container_name: mongo
+    ports:
+      - ${TYPEORM_PORT}:${TYPEORM_PORT}
+    volumes:
+      - ./mongo:/data/db
+    networks:
+      - jwt-network
+
+networks:
+  app-network:
+    external:
+      name: micro-app-network
+  jwt-network:
+    driver: bridge

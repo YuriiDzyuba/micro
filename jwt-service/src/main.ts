@@ -2,13 +2,16 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { hostDomainGlobalPrefix } from './config/config';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-  const PORT = process.env.PORT || 3000;
 
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix(hostDomainGlobalPrefix || 'jwt-api');
   app.enableCors();
+
+  const configService = app.get(ConfigService);
+  const PORT = configService.get<number>('SERVICE_PORT');
 
   const config = new DocumentBuilder()
     .setTitle('JWt token service')

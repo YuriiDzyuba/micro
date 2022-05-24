@@ -1,70 +1,31 @@
 version: '3.9'
 
 services:
-  jwt-service:
-    build: ./jwt-service
-    command: npm run start:dev
-    restart: unless-stopped
-    volumes:
-      - ./jwt-service/src:/app/src
-    env_file:
-      - ./jwt-service/.env
-    networks:
-      - jwt-docker-network
-    depends_on:
-      - jwt-db
-      - redis
-
-  email-service:
-    build: ./email-service
-    command: npm run start:dev
-    restart: unless-stopped
-    volumes:
-      - ./email-service/src:/app/src
-    env_file:
-      - ./email-service/.env
-    networks:
-      - jwt-docker-network
-    depends_on:
-      - jwt-service
-      - redis
-
-  jwt-db:
-    image: mongo:5.0
-    container_name: jwt-mongo
-    ports:
-      - 27017:27017
-    volumes:
-      - ./jwt-db/mongo:/data/db
-    networks:
-      - jwt-docker-network
-
   redis:
     image: redis:alpine
     container_name: redis
     ports:
-      - "6379:6379"
+      - ${REDIS_PORT}:${REDIS_PORT}
     networks:
-      - jwt-docker-network
+      - micro-app-network
     restart:
       unless-stopped
 
-  nginx:
-    image: nginx:stable-alpine
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
-    networks:
-      - jwt-docker-network
-    restart:
-      unless-stopped
-    depends_on:
-      - jwt-service
-      - jwt-db
-      - redis
-      - email-service
+#  nginx:
+#    image: nginx:stable-alpine
+#    ports:
+#      - "80:80"
+#    volumes:
+#      - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
+#    networks:
+#      - micro-app-network
+#    restart:
+#      unless-stopped
+#    depends_on:
+#      - redis
 
 networks:
-  jwt-docker-network:
-    driver: bridge
+  micro-app-network:
+    name: micro-app-network
+    attachable: true
+    driver: overlay
