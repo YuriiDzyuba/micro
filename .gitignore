@@ -8,6 +8,7 @@
 /frontend/.vscode
 
 /main-service/pgdata
+/jwt-service/mongo
 
 # Logs
 logs
