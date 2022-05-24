@@ -3,10 +3,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ProfileModule } from './profile/profile.module';
+import configuration from './config/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: './env' }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: './env',
+      load: [configuration]
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -23,8 +29,11 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
         logging: false,
       }),
     }),
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
+
+
