@@ -1,3 +1,3 @@
 export enum Config {
-    accessJwtSecret = 'accessJwtSecret'
+  accessJwtSecret = 'accessJwtSecret',
 }

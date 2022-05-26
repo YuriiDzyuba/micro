@@ -5,12 +5,11 @@ import {
   NestMiddleware,
 } from '@nestjs/common';
 import { NextFunction, Response } from 'express';
-import {JwtPayload, verify} from 'jsonwebtoken';
+import { JwtPayload, verify } from 'jsonwebtoken';
 import { ExpressRequestInterface } from '../types/expressRequest.interface';
-import { JwtToken } from "../types/jwtToken.type";
-import { ConfigService } from "@nestjs/config";
+import { JwtToken } from '../types/jwtToken.type';
+import { ConfigService } from '@nestjs/config';
 import { Config } from 'src/types/config.type';
-
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
@@ -23,7 +22,7 @@ export class AuthMiddleware implements NestMiddleware {
       return;
     }
 
-    const accessJwtSecret = this.configService.get(Config.accessJwtSecret)
+    const accessJwtSecret = this.configService.get(Config.accessJwtSecret);
     const tokenType: string = req.headers.authorization.split(' ')[0];
     const token: string = req.headers.authorization.split(' ')[1];
 
@@ -34,16 +33,17 @@ export class AuthMiddleware implements NestMiddleware {
     }
 
     try {
-      const decodedUserData = <JwtPayload>verify(token, JwtToken.ACCESS_TOKEN, accessJwtSecret);
+      const decodedUserData = <JwtPayload>(
+        verify(token, JwtToken.ACCESS_TOKEN, accessJwtSecret)
+      );
 
       if (!decodedUserData.userId) throw new Error();
 
       req.currentUser = {
         userId: decodedUserData.userId,
         username: decodedUserData.username,
-        email: decodedUserData.email
-      }
-
+        email: decodedUserData.email,
+      };
     } catch (err) {
       throw new HttpException(`invalid ${tokenType}`, HttpStatus.UNAUTHORIZED);
     }
