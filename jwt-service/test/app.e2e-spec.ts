@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { UserModule } from '../dist/user/user.module';
+import { UserModule } from '../dist/user/user.modules';
 
 describe('jwt (e2e)', () => {
   let app: INestApplication;
