@@ -1,10 +1,12 @@
 import { Comment } from '../types/comment.type';
 import {
-  Column, CreateDateColumn,
+  Column,
+  CreateDateColumn,
   Entity,
   ManyToMany,
   ManyToOne,
-  PrimaryGeneratedColumn, UpdateDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { AccountEntity } from '../../account.module/entities/account.entity';
 import { Account } from '../../account.module/types/account.type';

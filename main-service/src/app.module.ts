@@ -1,13 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import config from './config/config';
 import { DatabaseConfig } from './config/database.config';
-import { AccountModule } from './account.module/account.module';
-import { PostModule } from './post.module/post.module';
-import { CommentModule } from './comment.module/comment.module';
+import { AccountModule } from './modules/account.module/account.module';
+import { PostModule } from './modules/post.module/post.module';
+import { CommentModule } from './modules/comment.module/comment.module';
 
 @Module({
   imports: [
@@ -24,7 +22,5 @@ import { CommentModule } from './comment.module/comment.module';
     PostModule,
     CommentModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
