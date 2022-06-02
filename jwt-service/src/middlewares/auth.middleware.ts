@@ -6,7 +6,7 @@ import {
   NestMiddleware,
 } from '@nestjs/common';
 import { NextFunction, Response } from 'express';
-import { verify } from 'jsonwebtoken';
+import {JwtPayload, verify} from 'jsonwebtoken';
 import { ExpressRequestInterface } from '../types/expressRequest.interface';
 import {
   UserApiServiceInterfaceToken,
@@ -41,19 +41,20 @@ export class AuthMiddleware implements NestMiddleware {
     }
 
     try {
-      const decodedUserData = verify(
+      const decodedUserData = <JwtPayload>verify(
         token,
-        tokenType === TokenTypes.ACCESS_TOKEN
+          tokenType === TokenTypes.ACCESS_TOKEN
           ? process.env.ACCESS_JWT_SECRET
           : process.env.REFRESH_JWT_SECRET,
       );
+
+      if (!decodedUserData.id) throw new Error();
+
       const user: SafeUserType = await this.userApiService.findUserById(
-        decodedUserData.id,
+        decodedUserData.id!,
       );
 
-      if (!user) {
-        throw new Error();
-      }
+      if (!user) throw new Error();
 
       tokenType === TokenTypes.ACCESS_TOKEN
         ? (req.currentUser = user)
