@@ -1,14 +1,6 @@
 # compiled output
-*/dist
-*/node_modules
-/jwt-db
-*.env
-/.env
-/frontend/.angular
-/frontend/.vscode
-
-/main-service/pgdata
-/jwt-service/mongo
+/dist
+/node_modules
 
 # Logs
 logs

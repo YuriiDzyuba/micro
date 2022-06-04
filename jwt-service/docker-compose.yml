@@ -13,7 +13,6 @@ services:
       - TYPEORM_CONNECTION=${TYPEORM_CONNECTION}
       - TYPEORM_USERNAME=${TYPEORM_USERNAME}
       - TYPEORM_PASSWORD=${TYPEORM_PASSWORD}
-      - TYPEORM_DATABASE=${TYPEORM_DATABASE}
       - TYPEORM_HOST=mongo
       - TYPEORM_PORT=${TYPEORM_PORT}
     networks:
@@ -27,6 +26,9 @@ services:
   mongo:
     image: mongo:5.0
     container_name: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${TYPEORM_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${TYPEORM_PASSWORD}
     ports:
       - ${TYPEORM_PORT}:${TYPEORM_PORT}
     volumes:
