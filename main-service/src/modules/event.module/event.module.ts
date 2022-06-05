@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { EventsService } from './events.service';
-import { EventsController } from './events.controller';
+import { EventService } from './event.service';
+import { EventController } from './event.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import config from './config/events.config';
+import config from './configs/event.config';
+import {ConfigModule, ConfigService} from '@nestjs/config';
 
 @Module({
   imports: [
@@ -11,7 +11,7 @@ import config from './config/events.config';
     ClientsModule.registerAsync([
       {
         imports: [ConfigModule],
-        name: 'JWT_SERVICE',
+        name: 'MAIN_SERVICE',
         useFactory: async (configService: ConfigService) => ({
           transport: Transport.REDIS,
           options: {
@@ -22,8 +22,8 @@ import config from './config/events.config';
       },
     ]),
   ],
-  controllers: [EventsController],
-  providers: [EventsService],
-  exports: [EventsService],
+  controllers: [EventController],
+  providers: [EventService],
+  exports: [EventService],
 })
-export class EventsModule {}
+export class EventModule {}

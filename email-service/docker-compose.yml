@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  email-service:
+    build: .
+    command: npm run start:dev
+    restart: unless-stopped
+    volumes:
+      - ./src:/app/src
+    environment:
+      - SERVICE_NAME=${SERVICE_NAME}
+      - REDIS_URL=${REDIS_URL}
+      - SOURCE_EMAIL_SERVICE=${SOURCE_EMAIL_SERVICE}
+      - SOURCE_EMAIL=${SOURCE_EMAIL}
+      - SOURCE_EMAIL_PASSWORD=${SOURCE_EMAIL_PASSWORD}
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external:
+      name: micro-app-network

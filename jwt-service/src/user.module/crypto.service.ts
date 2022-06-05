@@ -1,17 +1,10 @@
 import { randomBytes, scrypt } from 'crypto';
-import { JwtPayload, sign, verify } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import { promisify } from 'util';
 import { Injectable } from '@nestjs/common';
 import { SafeUserType } from './types/safeUser.type';
-import {
-  accessJwtExpIn,
-  accessJwtSecret,
-  hostDomain,
-  hostDomainGlobalPrefix,
-  refreshJwtExpIn,
-  refreshJwtSecret,
-} from '../config/config';
 import { VerifiedEmailVerificationLinkType } from './types/verifiedEmailVerificationLink.type';
+import { ConfigService } from '@nestjs/config';
 
 const scryptAsync = promisify(scrypt);
 
@@ -19,6 +12,25 @@ const scryptAsync = promisify(scrypt);
 export class CryptoService {
   private readonly secret = 'secret';
   private readonly expTime = '1h';
+  private readonly serviceHost;
+  private readonly servicePort;
+  private readonly accessJwtSecret;
+  private readonly refreshJwtSecret;
+  private readonly accessJwtExpIn;
+  private readonly refreshJwtExpIn;
+  private readonly hostDomainGlobalPrefix;
+
+  constructor(private configService: ConfigService) {
+    this.serviceHost = this.configService.get('serviceHost');
+    this.servicePort = this.configService.get('servicePort');
+    this.accessJwtSecret = this.configService.get('accessJwtSecret');
+    this.refreshJwtSecret = this.configService.get('refreshJwtSecret');
+    this.accessJwtExpIn = this.configService.get('accessJwtExpIn');
+    this.refreshJwtExpIn = this.configService.get('refreshJwtExpIn');
+    this.hostDomainGlobalPrefix = this.configService.get(
+      'hostDomainGlobalPrefix',
+    );
+  }
 
   async passwordToHash(password: string) {
     const salt = randomBytes(8).toString('hex');
@@ -38,7 +50,7 @@ export class CryptoService {
 
   createEmailVerificationLink(email: string) {
     const uniqueEmailBasedString = this.generateEmailVerificationString(email);
-    return `${hostDomain}${hostDomainGlobalPrefix}/user/verify_email/${uniqueEmailBasedString}`;
+    return `${this.serviceHost}${this.servicePort}/${this.hostDomainGlobalPrefix}/user/verify_email/${uniqueEmailBasedString}`;
   }
 
   createRandomString() {
@@ -58,9 +70,10 @@ export class CryptoService {
         username: user.userName,
         email: user.email,
       },
-      tokenType === 'refresh' ? refreshJwtSecret : accessJwtSecret,
+      tokenType === 'refresh' ? this.refreshJwtSecret : this.accessJwtSecret,
       {
-        expiresIn: tokenType === 'refresh' ? refreshJwtExpIn : accessJwtExpIn,
+        expiresIn:
+          tokenType === 'refresh' ? this.refreshJwtExpIn : this.accessJwtExpIn,
       },
     );
   }

@@ -56,4 +56,11 @@ export class AccountRepository {
     const { affected } = await this.account.delete(accountId);
     return !!affected;
   }
+
+  async updateAvatar(accountId: string, avatar: string): Promise<any> {
+    const updatedAccount = await this.account.save({ accountId,  avatar });
+    return updatedAccount
+        ? this.accountMapper.mapAccountEntityToAccount(updatedAccount)
+        : null;
+  }
 }

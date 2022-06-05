@@ -33,7 +33,7 @@ export class AccountEntity implements Account {
   @Column({ nullable: true })
   description: string;
 
-  @Column({ nullable: true })
+  @Column({ enum: Role , default: Role.STUDENT})
   role: Role;
 
   @OneToMany(() => CommentEntity, (comment) => comment.commentAuthor)
