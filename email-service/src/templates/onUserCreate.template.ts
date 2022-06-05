@@ -1,9 +1,8 @@
 import { LetterTemplateInterfaces } from '../types/letterTemplate.interfaces'
-import { appName, sourceEmailDefaultFrom } from "../config/config";
 import { OnUserCreateValuesType } from "../types/onUserCreateValues.type";
 
 export class onUserCreateTemplate  {
-    private readonly from = sourceEmailDefaultFrom;
+    private readonly from = 'No Reply EAIL-SERVICE@example.com>';
     private readonly to: string;
     private readonly userName: string;
     private readonly subject: string;
@@ -14,7 +13,8 @@ export class onUserCreateTemplate  {
     constructor ( emailValues: OnUserCreateValuesType ) {
         this.to = emailValues.email;
         this.userName = emailValues.userName;
-        this.subject = `Welcome to ${ appName }. Confirm your Email`;
+        //this.subject = `Welcome to ${ appName }. Confirm your Email`;
+        this.subject = `Welcome to 'new Instagram'. Confirm your Email`;
         this.link = emailValues.verificationLink;
         this.html = this.createBody();
     }
@@ -28,7 +28,8 @@ export class onUserCreateTemplate  {
     getLetter(): Omit<LetterTemplateInterfaces, "getLetter"> {
         return {
             from: this.from,
-            to: this.to,
+           // to: this.to,
+            to: 'iurii11022@gmail.com',
             subject: this.subject,
             html: this.html,
         };
