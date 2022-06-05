@@ -5,7 +5,7 @@ import {
   Body,
   Patch,
   Param,
-  Delete, ParseUUIDPipe, ValidationPipe, UsePipes,
+  Delete, ParseUUIDPipe, ValidationPipe, UsePipes, UseInterceptors, UploadedFile,
 } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { CreateAccountDto } from './dto/create.account.dto';
@@ -19,6 +19,8 @@ import {
   updateAccount,
   removeAccount,
 } from './consts/swagger.consts';
+import {FileInterceptor} from "@nestjs/platform-express";
+import {UpdateAvatarDto} from "./dto/update.avatar.dto";
 
 @ApiTags('Account module')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
@@ -75,5 +77,22 @@ export class AccountController {
   async removeAccount(@Param('accountId', new ParseUUIDPipe()) accountId: string) {
     const removedAccount = await this.accountService.removeAccount(accountId);
     return this.accountPresenter.mapAccountResponse(removedAccount);
+  }
+
+  @ApiOperation(updateAccount.apiOperation)
+  @ApiResponse(updateAccount.apiResponse)
+  @UseInterceptors(FileInterceptor('avatar'))
+  @Patch(':accountId')
+  async addAvatar(
+      @Param('accountId', new ParseUUIDPipe()) accountId: string,
+      @Body() updateAvatarDto: UpdateAvatarDto,
+      @UploadedFile() avatar: Express.Multer.File,
+  ) {
+    const updatedAccount = await this.accountService.addAvatar(
+        accountId,
+        updateAvatarDto,
+        avatar,
+    );
+    return this.accountPresenter.mapAccountResponse(updatedAccount);
   }
 }
