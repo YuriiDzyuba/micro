@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  file-service:
+    build: .
+    command: npm run start:dev
+    restart: unless-stopped
+    volumes:
+      - ./src:/app/src
+    environment:
+      - SERVICE_NAME=${SERVICE_NAME}
+      - REDIS_URL=${REDIS_URL}
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external:
+      name: micro-app-network
