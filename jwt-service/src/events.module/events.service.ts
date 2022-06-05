@@ -2,12 +2,15 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { EventsEnum } from './types/events.enum';
 import { CreatedUserWithActivationLinkType } from '../user.module/types/createdUserWithActivationLink.type';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class EventsService {
   private logger = new Logger(EventsService.name);
-  constructor(@Inject('JWT_SERVICE') private client: ClientProxy) {}
-
+  constructor(
+    private configService: ConfigService,
+    @Inject('JWT_SERVICE') private client: ClientProxy,
+  ) {}
   async onUserCreateEventEmitter(
     createdUserWithActivationLink: CreatedUserWithActivationLinkType,
   ) {

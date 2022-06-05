@@ -2,17 +2,23 @@ import { Module } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { EventsController } from './events.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { redisUrl } from '../config/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import config from './config/events.config';
 
 @Module({
   imports: [
-    ClientsModule.register([
+    ConfigModule.forFeature(config),
+    ClientsModule.registerAsync([
       {
+        imports: [ConfigModule],
         name: 'JWT_SERVICE',
-        transport: Transport.REDIS,
-        options: {
-          url: redisUrl,
-        },
+        useFactory: async (configService: ConfigService) => ({
+          transport: Transport.REDIS,
+          options: {
+            url: configService.get<string>('redisUrl'),
+          },
+        }),
+        inject: [ConfigService],
       },
     ]),
   ],

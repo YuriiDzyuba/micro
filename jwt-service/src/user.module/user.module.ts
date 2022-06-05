@@ -11,9 +11,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventsModule } from '../events.module/events.module';
 import { UserMappers } from './user.mappers';
 import { EmailVerification } from './entity/emailVerification.entity';
+import { ConfigModule } from '@nestjs/config';
+import config from './config/user.config';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, EmailVerification]), EventsModule],
+  imports: [
+    ConfigModule.forFeature(config),
+    TypeOrmModule.forFeature([User, EmailVerification]),
+    EventsModule,
+  ],
   controllers: [UserController],
   providers: [
     {

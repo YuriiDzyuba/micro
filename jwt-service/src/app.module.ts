@@ -12,29 +12,23 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EventsModule } from './events.module/events.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { OAuthModule } from './oAuth.module/oAuth.module';
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import { User} from "./user.module/entity/user.entity";
-import { EmailVerification} from "./user.module/entity/emailVerification.entity";
+import { ConfigModule } from '@nestjs/config';
+import config from './config/config';
+import { DatabaseConfig } from './config/database.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: './env' }),
+    ConfigModule.forRoot({
+      isGlobal: false,
+      envFilePath: './env',
+      load: [config],
+    }),
     UserModule,
     EventsModule,
     EventEmitterModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (config: ConfigService) => ({
-        type: config.get<'mongodb'>('TYPEORM_CONNECTION'),
-        host: config.get<string>('TYPEORM_HOST'),
-        port: config.get<number>('TYPEORM_PORT'),
-        username: config.get<string>('TYPEORM_USERNAME'),
-        password: config.get<string>('TYPEORM_PASSWORD'),
-        entities: [User, EmailVerification],
-        synchronize: true,
-        logging: false,
-      }),
+      useClass: DatabaseConfig,
     }),
     AdminModule,
     OAuthModule,
