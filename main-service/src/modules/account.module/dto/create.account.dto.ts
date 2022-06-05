@@ -28,7 +28,7 @@ export class CreateAccountDto
   @IsNotEmpty()
   title: string;
 
-  @ApiProperty({ example: 'description', description: 'account description' })
+  @ApiProperty({ example: 'description longer than or equal to 16 characters', description: 'account description' })
   @MinLength(16)
   @MaxLength(1024)
   @IsNotEmpty()
