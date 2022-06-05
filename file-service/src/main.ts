@@ -1,14 +1,14 @@
 import { NestFactory } from '@nestjs/core';
-import { EmailModule } from './email.module';
 import { Transport } from "@nestjs/microservices";
 import { ConfigService } from "@nestjs/config";
+import { AppModule } from "./app.module";
 
 
 async function bootstrap() {
   const redisPort = process.env.REDIS_URL || 'redis://localhost:6379'
 
-  const app = await NestFactory.createMicroservice(EmailModule, {
-    transport: Transport.REDIS,
+  const app = await NestFactory.createMicroservice(AppModule, {
+    transport: Transport.TCP,
     options: {
       url: redisPort,
     },
