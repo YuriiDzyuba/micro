@@ -1,6 +1,6 @@
 import { Account } from '../types/account.type';
 import { Role } from '../types/role.enum';
-import { IsNotEmpty, IsUUID, MaxLength, MinLength } from 'class-validator';
+import {IsEnum, IsNotEmpty, IsUUID, MaxLength, MinLength} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateAccountDto
@@ -38,5 +38,6 @@ export class CreateAccountDto
   @MinLength(2)
   @MaxLength(12)
   @IsNotEmpty()
+  @IsEnum(Role)
   role: Role;
 }
