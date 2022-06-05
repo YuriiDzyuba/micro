@@ -12,7 +12,6 @@ import { PostEntity } from '../../post.module/entities/post.entity';
 import { Role } from '../types/role.enum';
 import { Post } from '../../post.module/types/post.type';
 import { Comment } from '../../comment.module/types/comment.type';
-import {IsEnum} from "class-validator";
 
 @Entity({ name: 'account' })
 export class AccountEntity implements Account {
