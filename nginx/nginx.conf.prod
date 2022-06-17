@@ -3,7 +3,10 @@ server {
 
   server_name localhost.test.com;
 
-  location /jwt-api {
+  location /jwt {
     proxy_pass http://jwt-service:3000/jwt-api;
   }
+  location /main {
+      proxy_pass http://main-service:3003/main-api;
+    }
 }

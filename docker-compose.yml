@@ -3,7 +3,7 @@ version: '3.9'
 services:
   redis:
     image: redis:alpine
-    container_name: redis
+    container_name: top-redis
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
     networks:
@@ -13,7 +13,7 @@ services:
 
   nats:
     image: 'nats:2.8.3-alpine'
-    container_name: nats
+    container_name: top-nats
     ports:
       - "4222:4222"
     networks:
@@ -21,18 +21,20 @@ services:
     restart:
       unless-stopped
 
-#  nginx:
-#    image: nginx:stable-alpine
-#    ports:
-#      - "80:80"
-#    volumes:
-#      - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
-#    networks:
-#      - micro-app-network
-#    restart:
-#      unless-stopped
-#    depends_on:
-#      - redis
+  nginx:
+    image: nginx:stable-alpine
+    container_name: top-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
+    networks:
+      - micro-app-network
+    restart:
+      unless-stopped
+    depends_on:
+      - redis
+      - jwt-service
 
 networks:
   micro-app-network:
