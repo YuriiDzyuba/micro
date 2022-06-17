@@ -7,7 +7,10 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @MessagePattern({ cmd: 'sum' })
-  async accumulate(data: number[]): Promise<number> {
-    return (data || []).reduce((a, b) => a + b);
+  async accumulate(data: any): Promise<any> {
+    console.log("++++++++++++++++++++++++++++++")
+    console.log(data)
+    return data;
   }
 }
+

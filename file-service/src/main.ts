@@ -5,12 +5,12 @@ import { AppModule } from "./app.module";
 
 
 async function bootstrap() {
-  const redisPort = process.env.REDIS_URL || 'redis://localhost:6379'
+  const natsUrl = process.env.NATS_URL || 'nats://nats:8222'
 
   const app = await NestFactory.createMicroservice(AppModule, {
-    transport: Transport.TCP,
+    transport: Transport.NATS,
     options: {
-      url: redisPort,
+      servers: [natsUrl],
     },
   });
 
@@ -18,6 +18,6 @@ async function bootstrap() {
   const NAME = configService.get<string>('SERVICE_NAME');
 
   await app.listen();
-  console.log(`${NAME} listening and connected to ${redisPort}`)
+  console.log(`${NAME} listening and connected to ${natsUrl}`)
 }
 bootstrap();

@@ -9,7 +9,11 @@ services:
       - ./src:/app/src
     environment:
       - SERVICE_NAME=${SERVICE_NAME}
-      - REDIS_URL=${REDIS_URL}
+      - NATS_URL=${NATS_URL}
+      - AWS_S3_ACCESS_KEY=${AWS_S3_ACCESS_KEY}
+      - AWS_S3_NAME=${AWS_S3_NAME}
+      - AWS_S3_REGION=${AWS_S3_REGION}
+      - AWS_S3_SECRET_KEY=${AWS_S3_SECRET_KEY}
     networks:
       - app-network
 
