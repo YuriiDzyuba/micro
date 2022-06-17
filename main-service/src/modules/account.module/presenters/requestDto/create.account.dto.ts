@@ -1,5 +1,5 @@
-import { Account } from '../types/account.type';
-import { Role } from '../types/role.enum';
+import { Account } from '../../types/account.type';
+import { Role } from '../../types/role.enum';
 import {IsEnum, IsNotEmpty, IsUUID, MaxLength, MinLength} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 

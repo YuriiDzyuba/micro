@@ -5,12 +5,12 @@ import {
   Body,
   Patch,
   Param,
-  Delete, ParseUUIDPipe, ValidationPipe, UsePipes, UseInterceptors, UploadedFile,
+  Delete, ParseUUIDPipe, ValidationPipe, UsePipes, UseInterceptors, UploadedFile, Header,
 } from '@nestjs/common';
 import { AccountService } from './account.service';
-import { CreateAccountDto } from './dto/create.account.dto';
-import { UpdateAccountDto } from './dto/update.account.dto';
-import { AccountPresenter } from './account.presenter';
+import { CreateAccountDto } from './presenters/requestDto/create.account.dto';
+import { UpdateAccountDto } from './presenters/requestDto/update.account.dto';
+import { AccountPresenter } from './presenters/account.presenter';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   createAccount,
@@ -20,10 +20,10 @@ import {
   removeAccount,
 } from './consts/swagger.consts';
 import {FileInterceptor} from "@nestjs/platform-express";
-import {UpdateAvatarDto} from "./dto/update.avatar.dto";
+import {UpdateAvatarDto} from "./presenters/requestDto/update.avatar.dto";
+import {LoggingInterceptor} from "../../interceptors/loggingInterceptot";
 
 @ApiTags('Account module')
-@UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
 @Controller('account')
 export class AccountController {
   constructor(
@@ -51,9 +51,13 @@ export class AccountController {
 
   @ApiOperation(findOneAccount.apiOperation)
   @ApiResponse(findOneAccount.apiResponse)
+
   @Get(':accountId')
-  async findOneAccount(@Param('accountId', new ParseUUIDPipe()) accountId: string) {
+  @Header("myHeadersdsdsd", "dfhhdfhds;fhs;fhsdfh;sdfh;sdfdffd")
+  async findOneAccount(
+      @Param('accountId', new ParseUUIDPipe()) accountId: string,) {
     const foundedAccount = await this.accountService.findOneAccount(accountId);
+
     return this.accountPresenter.mapAccountResponse(foundedAccount);
   }
 
@@ -76,13 +80,14 @@ export class AccountController {
   @Delete(':accountId')
   async removeAccount(@Param('accountId', new ParseUUIDPipe()) accountId: string) {
     const removedAccount = await this.accountService.removeAccount(accountId);
+    // @ts-ignore
     return this.accountPresenter.mapAccountResponse(removedAccount);
   }
 
   @ApiOperation(updateAccount.apiOperation)
   @ApiResponse(updateAccount.apiResponse)
   @UseInterceptors(FileInterceptor('avatar'))
-  @Patch(':accountId')
+  @Patch('avatar/:accountId')
   async addAvatar(
       @Param('accountId', new ParseUUIDPipe()) accountId: string,
       @Body() updateAvatarDto: UpdateAvatarDto,
@@ -93,6 +98,7 @@ export class AccountController {
         updateAvatarDto,
         avatar,
     );
+    // @ts-ignore
     return this.accountPresenter.mapAccountResponse(updatedAccount);
   }
 }

@@ -1,4 +1,4 @@
-import { CreateAccountDto } from './dto/create.account.dto';
+import { CreateAccountDto } from './presenters/requestDto/create.account.dto';
 import { AccountEntity } from './entities/account.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -13,7 +13,7 @@ export class AccountRepository {
     readonly accountMapper: AccountMapper,
   ) {}
 
-  async findAccountByUserIdAndName(userId: string, name: string) {
+  async findAccountByUserIdAndName(userId: string, name: string): Promise<AccountEntity> {
     const foundedAccount = await this.account.findOne({
       where: [
         { userId,  name},

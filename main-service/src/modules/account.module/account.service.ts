@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAccountDto } from './dto/create.account.dto';
-import { UpdateAccountDto } from './dto/update.account.dto';
+import {Inject, Injectable} from '@nestjs/common';
+import { CreateAccountDto } from './presenters/requestDto/create.account.dto';
+import { UpdateAccountDto } from './presenters/requestDto/update.account.dto';
 import { AccountRepository } from './account.repository';
 import { AccountEntity } from './entities/account.entity';
 import {
@@ -8,13 +8,24 @@ import {
   MimetypeAvatarException,
   OverSizeAvatarException,
 } from './exceptions/http.exceptions';
-import { UpdateAvatarDto } from './dto/update.avatar.dto';
+import { UpdateAvatarDto } from './presenters/requestDto/update.avatar.dto';
 import { AvatarMimeType } from './types/avatarMimeType.enum';
+import {ClientProxy} from "@nestjs/microservices";
+import {firstValueFrom, map, Observable} from "rxjs";
+
 
 @Injectable()
 export class AccountService {
-  constructor(private readonly accountRepository: AccountRepository) {}
-  async createAccount(createAccount: CreateAccountDto) {
+  constructor(private readonly accountRepository: AccountRepository,
+              @Inject('MAIN_SERVICE') private client: ClientProxy,
+              ) {}
+
+  accumulate( payload ): Observable<AccountEntity> {
+    const pattern = { cmd: 'sum' };
+    return this.client.send<AccountEntity>(pattern, payload);
+  }
+
+  async createAccount(createAccount: CreateAccountDto): Promise<AccountEntity> {
     const foundedAccount =
       await this.accountRepository.findAccountByUserIdAndName(
         createAccount.userId,
@@ -29,6 +40,17 @@ export class AccountService {
       ...emptyAccount,
       ...createAccount,
     });
+
+
+
+   // const res = await firstValueFrom(this.accumulate( newAccount ).pipe( map ((accont: AccountEntity) => {
+   //   console.log("&&&&&&&&&&&&&&")
+   //   console.log(accont)
+   //   return accont
+   // })))
+   //  console.log("____________________________---")
+   //  console.log(res)
+
     return newAccount;
   }
 
