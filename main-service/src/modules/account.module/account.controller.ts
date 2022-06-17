@@ -21,7 +21,6 @@ import {
 } from './consts/swagger.consts';
 import {FileInterceptor} from "@nestjs/platform-express";
 import {UpdateAvatarDto} from "./presenters/requestDto/update.avatar.dto";
-import {LoggingInterceptor} from "../../interceptors/loggingInterceptot";
 
 @ApiTags('Account module')
 @Controller('account')
@@ -51,9 +50,7 @@ export class AccountController {
 
   @ApiOperation(findOneAccount.apiOperation)
   @ApiResponse(findOneAccount.apiResponse)
-
   @Get(':accountId')
-  @Header("myHeadersdsdsd", "dfhhdfhds;fhs;fhsdfh;sdfh;sdfdffd")
   async findOneAccount(
       @Param('accountId', new ParseUUIDPipe()) accountId: string,) {
     const foundedAccount = await this.accountService.findOneAccount(accountId);

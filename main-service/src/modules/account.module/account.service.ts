@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateAccountDto } from './presenters/requestDto/create.account.dto';
 import { UpdateAccountDto } from './presenters/requestDto/update.account.dto';
 import { AccountRepository } from './account.repository';
@@ -10,17 +10,17 @@ import {
 } from './exceptions/http.exceptions';
 import { UpdateAvatarDto } from './presenters/requestDto/update.avatar.dto';
 import { AvatarMimeType } from './types/avatarMimeType.enum';
-import {ClientProxy} from "@nestjs/microservices";
-import {firstValueFrom, map, Observable} from "rxjs";
-
+import { ClientProxy } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AccountService {
-  constructor(private readonly accountRepository: AccountRepository,
-              @Inject('MAIN_SERVICE') private client: ClientProxy,
-              ) {}
+  constructor(
+    private readonly accountRepository: AccountRepository,
+    @Inject('MAIN_SERVICE') private client: ClientProxy,
+  ) {}
 
-  accumulate( payload ): Observable<AccountEntity> {
+  accumulate(payload): Observable<AccountEntity> {
     const pattern = { cmd: 'sum' };
     return this.client.send<AccountEntity>(pattern, payload);
   }
@@ -41,15 +41,13 @@ export class AccountService {
       ...createAccount,
     });
 
-
-
-   // const res = await firstValueFrom(this.accumulate( newAccount ).pipe( map ((accont: AccountEntity) => {
-   //   console.log("&&&&&&&&&&&&&&")
-   //   console.log(accont)
-   //   return accont
-   // })))
-   //  console.log("____________________________---")
-   //  console.log(res)
+    // const res = await firstValueFrom(this.accumulate( newAccount ).pipe( map ((accont: AccountEntity) => {
+    //   console.log("&&&&&&&&&&&&&&")
+    //   console.log(accont)
+    //   return accont
+    // })))
+    //  console.log("____________________________---")
+    //  console.log(res)
 
     return newAccount;
   }
