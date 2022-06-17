@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  jwtApiUrl: 'http://localhost.test.com/jwt-api'
+  jwtApiUrl: 'http://localhost.test.com/jwt',
 };
 
 /*
