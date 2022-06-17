@@ -1,8 +1,8 @@
 version: '3,8'
 
 services:
-  main-api:
-    container_name: main-api
+  main-service:
+    container_name: main-service
     build: .
     command: npm run start:dev
     environment:
@@ -24,11 +24,11 @@ services:
     ports:
       - ${SERVICE_PORT}:${SERVICE_PORT}
     depends_on:
-      - db
+      - postgres
     restart: unless-stopped
 
   postgres:
-    container_name: postgres
+    container_name: main-postgres
     image: postgres:14.0-alpine
     restart: always
     environment:

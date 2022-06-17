@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   jwt-service:
+    container_name: jwt-service
     build: .
     command: npm run start:dev
     restart: unless-stopped
@@ -28,7 +29,7 @@ services:
 
   mongo:
     image: mongo:5.0
-    container_name: mongo
+    container_name: jwt-mongo
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${TYPEORM_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${TYPEORM_PASSWORD}
