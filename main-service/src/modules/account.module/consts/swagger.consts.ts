@@ -1,4 +1,6 @@
 import { AccountEntity } from '../entities/account.entity';
+import { CreateAccountResponseDto } from "../presenters/responseDto/create.account.response.dto";
+import { UpdateAccountResponseDto } from "../presenters/responseDto/update.account.response.dto";
 
 export const createAccount = {
   apiOperation: {
@@ -7,7 +9,7 @@ export const createAccount = {
   apiResponse: {
     status: 201,
     description: 'created new Account',
-    type: AccountEntity,
+    type: CreateAccountResponseDto,
   },
 };
 
@@ -40,7 +42,7 @@ export const updateAccount = {
   apiResponse: {
     status: 200,
     description: 'updated Account',
-    type: AccountEntity,
+    type: UpdateAccountResponseDto,
   },
 };
 

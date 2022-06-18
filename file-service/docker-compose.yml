@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  file-service:
+    build: .
+    command: npm run start:dev
+    restart: unless-stopped
+    volumes:
+      - ./src:/app/src
+    environment:
+      - SERVICE_NAME=${SERVICE_NAME}
+      - NATS_URL=${NATS_URL}
+      - AWS_S3_ACCESS_KEY=${AWS_S3_ACCESS_KEY}
+      - AWS_S3_NAME=${AWS_S3_NAME}
+      - AWS_S3_REGION=${AWS_S3_REGION}
+      - AWS_S3_SECRET_KEY=${AWS_S3_SECRET_KEY}
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external:
+      name: micro-app-network

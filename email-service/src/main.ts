@@ -5,10 +5,12 @@ import { ConfigService } from "@nestjs/config";
 
 
 async function bootstrap() {
+  const redisPort = process.env.REDIS_URL || 'redis://localhost:6379'
+
   const app = await NestFactory.createMicroservice(EmailModule, {
     transport: Transport.REDIS,
     options: {
-      url: 'redis://redis:6379',
+      url: redisPort,
     },
   });
 
@@ -16,6 +18,6 @@ async function bootstrap() {
   const NAME = configService.get<string>('SERVICE_NAME');
 
   await app.listen();
-  console.log(`${NAME} listening and connected to redis://redis:6379`)
+  console.log(`${NAME} listening and connected to ${redisPort}`)
 }
 bootstrap();

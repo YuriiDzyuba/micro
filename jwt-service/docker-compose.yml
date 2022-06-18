@@ -17,6 +17,7 @@ services:
       - TYPEORM_PASSWORD=${TYPEORM_PASSWORD}
       - TYPEORM_HOST=mongo
       - TYPEORM_PORT=${TYPEORM_PORT}
+      - REDIS_URL=${REDIS_URL}
     networks:
       - jwt-network
       - app-network
