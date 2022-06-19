@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
-import { LoggingInterceptor } from "./interceptors/loggingInterceptot";
+import { LoggingInterceptor } from './interceptors/loggingInterceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,7 +16,7 @@ async function bootstrap() {
   app.setGlobalPrefix(GLOBAL_PREFIX || 'main-api');
   app.enableCors();
   app.useGlobalInterceptors(new LoggingInterceptor());
-  app.flushLogs()
+  app.flushLogs();
 
   const swaggerUrl = `${GLOBAL_PREFIX || 'main-api'}/docs`;
   const config = new DocumentBuilder()
