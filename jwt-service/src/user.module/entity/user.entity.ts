@@ -10,7 +10,7 @@ import { Exclude } from 'class-transformer';
 import { v4 as uuidv4 } from 'uuid';
 import { UserType } from '../types/user.type';
 
-@Entity()
+@Entity({ name:'user'} )
 export class User implements UserType {
   @Exclude()
   @ObjectIdColumn()

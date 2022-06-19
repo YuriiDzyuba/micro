@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
+import { LoggingInterceptor } from "./interceptors/loggingInterceptor";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,6 +14,8 @@ async function bootstrap() {
   const NAME = configService.get<string>('SERVICE_NAME');
 
   app.setGlobalPrefix(GLOBAL_PREFIX || 'jwt-api');
+  app.enableCors();
+  app.useGlobalInterceptors(new LoggingInterceptor());
   app.enableCors();
 
   const swaggerUrl = `${GLOBAL_PREFIX || 'jwt-api'}/docs`;
