@@ -12,7 +12,7 @@ import { EventModule } from './modules/event.module/event.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: './env',
+      envFilePath: './.env',
       load: [config],
     }),
     TypeOrmModule.forRootAsync({
