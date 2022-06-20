@@ -36,7 +36,7 @@ services:
       - POSTGRES_PASSWORD=${TYPEORM_PASSWORD}
       - POSTGRES_DB=${TYPEORM_DATABASE}
     networks:
-      - app-network
+      - main-network
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     ports:
