@@ -20,7 +20,7 @@ import { DatabaseConfig } from './config/database.config';
   imports: [
     ConfigModule.forRoot({
       isGlobal: false,
-      envFilePath: './env',
+      envFilePath: './.env',
       load: [config],
     }),
     UserModule,
